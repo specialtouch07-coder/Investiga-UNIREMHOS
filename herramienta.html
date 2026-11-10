@@ -1,0 +1,1336 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>INVESTIGA+ Docente · UNIREMHOS</title>
+<link rel="icon" href="logo_uniremhos.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F4F4; --surface:#FFFFFF; --surface-2:#F8F8F8;
+  --ink:#000000; --ink-2:#4B4D4E; --ink-3:#77797A;
+  --line:#D3D5D6; --line-2:#E6E7E8;
+  --yellow:#FBAD18; --yellow-soft:#FFF3D6; --yellow-ink:#8A5A00;
+  --red:#ED1C24; --red-ink:#C4161D; --red-soft:#FDE8E9;
+  --focus:#FBAD18;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1C1D1E; --surface:#26282A; --surface-2:#2D2F31;
+    --ink:#F4F4F4; --ink-2:#C3C5C6; --ink-3:#95989A;
+    --line:#3E4143; --line-2:#333638;
+    --yellow-soft:#3A2E12; --yellow-ink:#FBC45A;
+    --red-ink:#FF6A6F; --red-soft:#3A1E20;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1C1D1E; --surface:#26282A; --surface-2:#2D2F31;
+  --ink:#F4F4F4; --ink-2:#C3C5C6; --ink-3:#95989A;
+  --line:#3E4143; --line-2:#333638;
+  --yellow-soft:#3A2E12; --yellow-ink:#FBC45A;
+  --red-ink:#FF6A6F; --red-soft:#3A1E20;
+  color-scheme: dark;
+}
+:root{ box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
+*,*::before,*::after{ box-sizing:inherit; }
+html{ scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px); }
+body{ margin:0; background:var(--bg); color:var(--ink); font-family:"Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+body::before{ content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--surface); }
+img,svg{ max-width:100%; }
+a{ color:var(--red-ink); }
+button,input,select,textarea{ font:inherit; color:inherit; }
+:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; border-radius:4px; }
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+
+[hidden]{ display:none !important; }
+/* Auth */
+.auth{ min-height:calc(100vh - 66px); display:grid; place-items:center; padding:32px 18px; }
+.auth-card{ width:100%; max-width:420px; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:32px 28px; }
+.auth-logo{ height:52px; width:auto; display:block; margin-bottom:20px; background:#fff; border-radius:6px; }
+.auth-card h1{ font-size:24px; margin-bottom:4px; }
+.auth-tabs{ display:flex; width:100%; margin:18px 0 4px; }
+.auth-tabs button{ flex:1; padding:9px 10px; }
+.auth-tabs button[aria-pressed="true"]{ background:var(--ink); color:var(--surface); }
+.auth-msg{ min-height:22px; font-size:13.5px; color:var(--red-ink); margin:10px 0 0; }
+.auth-msg.ok{ color:var(--ink); }
+.top-link{ color:var(--ink-2); text-decoration:none; font-weight:500; white-space:nowrap; }
+.top-link:hover{ color:var(--ink); }
+.who{ max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+@media (max-width: 640px){ .who{ display:none; } .top-link{ display:none; } }
+
+/* Top bar */
+.top{ position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:var(--surface); border-bottom:1px solid var(--line); }
+.top-in{ display:flex; align-items:center; gap:16px; padding:12px 24px; max-width:1320px; margin:0 auto; }
+.brand{ display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--ink); }
+.brand-logo{ display:block; height:40px; width:auto; flex:none; background:#fff; border-radius:6px; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .brand-logo{ padding:3px 6px; height:42px; } }
+:root[data-theme="dark"] .brand-logo{ padding:3px 6px; height:42px; }
+.brand-sep{ width:1px; height:28px; background:var(--line); }
+.brand-app{ font-weight:600; font-size:15px; }
+.brand-app span{ color:var(--ink-3); font-weight:500; }
+.top-right{ margin-left:auto; display:flex; align-items:center; gap:12px; font-size:13px; color:var(--ink-2); }
+.save-state{ white-space:nowrap; }
+.menu-btn{ display:none; background:none; border:1px solid var(--line); border-radius:8px; padding:6px 10px; cursor:pointer; }
+
+/* Layout */
+.shell{ display:grid; grid-template-columns:260px minmax(0,1fr); max-width:1320px; margin:0 auto; }
+nav.side{ position:sticky; top:calc(env(safe-area-inset-top,0px) + 65px); align-self:start; height:calc(100vh - 65px - env(safe-area-inset-top,0px)); overflow:auto; padding:24px 16px 32px 24px; border-right:1px solid var(--line); }
+.nav-group{ margin-bottom:22px; }
+.nav-title{ font-size:12px; font-weight:600; color:var(--ink-3); margin:0 0 6px 10px; }
+.nav-list{ list-style:none; margin:0; padding:0; position:relative; }
+.nav-steps::before{ content:""; position:absolute; left:22px; top:14px; bottom:14px; width:2px; background:var(--line-2); }
+.nav-item a{ position:relative; display:flex; align-items:center; gap:10px; padding:7px 10px; border-radius:8px; text-decoration:none; color:var(--ink-2); font-size:14px; font-weight:500; }
+.nav-item a:hover{ background:var(--surface); color:var(--ink); }
+.nav-item a[aria-current="page"]{ background:var(--surface); color:var(--ink); font-weight:600; box-shadow:inset 3px 0 0 var(--red); }
+.dot{ position:relative; z-index:1; flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-size:12px; font-weight:700; background:var(--surface); border:2px solid var(--line); color:var(--ink-3); }
+.dot.curso{ border-color:var(--yellow); color:var(--ink); background:var(--yellow-soft); }
+.dot.hecho{ border-color:var(--ink); background:var(--ink); color:var(--surface); }
+.ico{ flex:none; width:26px; display:grid; place-items:center; color:var(--ink-3); }
+
+main{ padding:32px 40px 80px; min-width:0; }
+.wrap{ max-width:900px; }
+.banner{ display:flex; gap:12px; align-items:flex-start; background:var(--yellow-soft); border-left:4px solid var(--yellow); padding:12px 16px; border-radius:6px; font-size:14px; margin-bottom:24px; color:var(--ink); }
+
+h1{ font-size:30px; line-height:1.2; font-weight:700; margin:0 0 10px; letter-spacing:-.01em; }
+h2{ font-size:20px; line-height:1.3; font-weight:700; margin:40px 0 14px; padding-left:12px; border-left:4px solid var(--red); }
+h2:first-child{ margin-top:0; }
+h3{ font-size:16px; font-weight:600; margin:24px 0 8px; }
+p{ margin:0 0 12px; }
+.lead{ font-size:16px; color:var(--ink-2); max-width:68ch; }
+.muted{ color:var(--ink-3); font-size:13px; }
+.step-head{ display:flex; gap:16px; align-items:flex-start; margin-bottom:24px; }
+.step-num{ flex:none; font-size:44px; font-weight:800; line-height:1; color:var(--yellow); }
+.step-head p{ color:var(--ink-2); max-width:66ch; margin:0; }
+
+.panel{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px 24px; margin-bottom:18px; }
+.panel.flat{ border-radius:8px; }
+.panel-note{ background:var(--yellow-soft); border-radius:8px; padding:14px 16px; font-size:14px; margin:12px 0; }
+
+/* Forms */
+label.f{ display:block; font-weight:600; font-size:14px; margin:16px 0 6px; }
+label.f small{ display:block; font-weight:400; color:var(--ink-3); font-size:13px; }
+input[type=text],input[type=url],input[type=number],input[type=email],input[type=password],select,textarea{ width:100%; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:15px; }
+textarea{ min-height:84px; resize:vertical; line-height:1.5; }
+input:focus,select:focus,textarea:focus{ outline:none; border-color:var(--yellow); box-shadow:0 0 0 3px color-mix(in srgb, var(--yellow) 30%, transparent); }
+.grid2{ display:grid; grid-template-columns:1fr 1fr; gap:0 18px; }
+.grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:0 18px; }
+fieldset{ border:0; margin:0 0 22px; padding:0; }
+legend{ font-weight:600; font-size:15px; margin-bottom:10px; padding:0; }
+.opts{ display:flex; flex-direction:column; gap:6px; }
+.opt{ display:flex; gap:10px; align-items:flex-start; padding:9px 12px; border:1px solid var(--line-2); border-radius:8px; cursor:pointer; background:var(--surface); font-size:14px; }
+.opt:hover{ border-color:var(--line); }
+.opt input{ margin-top:4px; accent-color:var(--red); }
+.opt:has(input:checked){ border-color:var(--yellow); background:var(--yellow-soft); }
+.chk{ display:flex; gap:10px; align-items:flex-start; font-size:14px; margin:6px 0; cursor:pointer; }
+.chk input{ margin-top:4px; accent-color:var(--red); width:16px; height:16px; }
+
+.btn{ text-decoration:none; display:inline-flex; align-items:center; gap:8px; border:1px solid var(--ink); background:var(--ink); color:var(--surface); border-radius:999px; padding:9px 18px; font-weight:600; font-size:14px; cursor:pointer; }
+.btn:hover{ opacity:.88; }
+.btn.sec{ background:transparent; color:var(--ink); border-color:var(--line); }
+.btn.sec:hover{ border-color:var(--ink); opacity:1; }
+.btn.yel{ background:var(--yellow); border-color:var(--yellow); color:#000; }
+.btn.small{ padding:6px 12px; font-size:13px; }
+.btn:disabled{ opacity:.45; cursor:not-allowed; }
+.actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:18px; }
+.linkbtn{ background:none; border:0; padding:0; color:var(--red-ink); font-weight:600; cursor:pointer; font-size:14px; }
+
+/* Unit picker */
+.unitbar{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:12px 14px; background:var(--surface); border:1px solid var(--line); border-radius:10px; margin-bottom:22px; }
+.unitbar .lbl{ font-size:13px; color:var(--ink-3); margin-right:4px; }
+.uchip{ border:1px solid var(--line); background:var(--surface-2); border-radius:999px; padding:5px 12px; font-size:13px; cursor:pointer; max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.uchip[aria-pressed="true"]{ background:var(--ink); color:var(--surface); border-color:var(--ink); }
+
+/* Status tags */
+.tag{ display:inline-block; font-size:12px; font-weight:600; padding:2px 10px; border-radius:999px; border:1px solid var(--line); color:var(--ink-2); white-space:nowrap; }
+.tag.ok{ background:var(--ink); color:var(--surface); border-color:var(--ink); }
+.tag.warn{ background:var(--yellow-soft); border-color:var(--yellow); color:var(--yellow-ink); }
+.tag.bad{ background:var(--red-soft); border-color:var(--red); color:var(--red-ink); }
+
+/* Home */
+.hero{ position:relative; overflow:hidden; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:36px 36px 30px; margin-bottom:28px; }
+.hero h1{ font-size:34px; max-width:18ch; }
+.hero .lead{ max-width:52ch; }
+.arcs{ position:absolute; right:-70px; top:-70px; width:300px; height:300px; pointer-events:none; }
+.hero > *:not(.arcs){ position:relative; }
+.path{ list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(7,1fr); gap:0; counter-reset:s; }
+.path li{ position:relative; padding:0 6px; text-align:center; }
+.path li::before{ content:""; position:absolute; top:17px; left:-50%; right:50%; height:3px; background:var(--line-2); }
+.path li:first-child::before{ display:none; }
+.path li.hecho::before, .path li.curso::before{ background:var(--ink); }
+.path a{ text-decoration:none; color:var(--ink-2); font-size:12.5px; line-height:1.35; display:flex; flex-direction:column; align-items:center; gap:8px; }
+.path .dot{ width:36px; height:36px; font-size:14px; }
+.path .st{ font-size:11.5px; color:var(--ink-3); }
+
+.talleres{ width:100%; border-collapse:collapse; font-size:14px; }
+.talleres td,.talleres th{ text-align:left; padding:12px 10px; border-bottom:1px solid var(--line-2); vertical-align:top; }
+.talleres th{ font-weight:600; color:var(--ink-3); font-size:13px; }
+.talleres td:first-child{ font-weight:700; white-space:nowrap; }
+
+.stack{ margin:14px 0 18px; }
+.stack .q{ font-size:14px; font-weight:600; margin-bottom:6px; }
+.bar{ display:flex; height:26px; border-radius:6px; overflow:hidden; background:var(--line-2); }
+.bar span{ display:block; height:100%; }
+.legend{ display:flex; flex-wrap:wrap; gap:4px 16px; margin-top:6px; font-size:12.5px; color:var(--ink-2); }
+.legend i{ display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px; }
+.c1{ background:#000; } .c2{ background:#FBAD18; } .c3{ background:#ED1C24; } .c4{ background:#A6A9AB; } .c5{ background:#D3D5D6; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .c1{ background:#F4F4F4; } }
+:root[data-theme="dark"] .c1{ background:#F4F4F4; }
+
+/* Result */
+.result{ border:2px solid var(--ink); border-radius:12px; padding:22px 24px; background:var(--surface); margin-top:8px; }
+.result h3{ margin-top:0; font-size:19px; }
+.focus-list{ margin:8px 0 0; padding-left:20px; }
+.focus-list li{ margin:4px 0; }
+
+/* Likert */
+.lk{ width:100%; border-collapse:collapse; }
+.lk th{ font-size:12px; font-weight:600; color:var(--ink-3); text-align:center; padding:6px 4px; width:76px; }
+.lk th:first-child{ text-align:left; width:auto; }
+.lk td{ border-top:1px solid var(--line-2); padding:10px 4px; font-size:14px; }
+.lk td.c{ text-align:center; }
+.lk input{ width:18px; height:18px; accent-color:var(--red); cursor:pointer; }
+.dimrow td{ font-weight:700; font-size:13px; color:var(--ink-2); padding-top:18px; border-top:0; }
+
+.cmp{ display:grid; grid-template-columns:150px 1fr 54px; gap:6px 14px; align-items:center; font-size:13.5px; }
+.cmp .track{ position:relative; height:22px; background:var(--line-2); border-radius:4px; }
+.cmp .pre,.cmp .post{ position:absolute; left:0; height:9px; border-radius:2px; }
+.cmp .pre{ top:2px; background:var(--line); background:#A6A9AB; }
+.cmp .post{ bottom:2px; background:var(--red); }
+.cmp .solo{ position:absolute; left:0; top:4px; bottom:4px; background:var(--ink); border-radius:2px; }
+.cmp .num{ font-weight:700; text-align:right; }
+
+/* Coherence chain */
+.score{ display:flex; align-items:center; gap:18px; margin-bottom:18px; }
+.ring{ --p:0; width:84px; height:84px; border-radius:50%; background:conic-gradient(var(--red) calc(var(--p)*1%), var(--line-2) 0); display:grid; place-items:center; flex:none; }
+.ring span{ width:64px; height:64px; border-radius:50%; background:var(--surface); display:grid; place-items:center; font-weight:800; font-size:18px; }
+.chain{ position:relative; margin:0; padding:0; list-style:none; }
+.node{ position:relative; margin-left:34px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 16px; }
+.node::before{ content:""; position:absolute; left:-29px; top:16px; width:14px; height:14px; border-radius:50%; background:var(--surface); border:3px solid var(--line); }
+.node.full::before{ border-color:var(--ink); background:var(--ink); }
+.node .nl{ font-size:12.5px; font-weight:600; color:var(--ink-3); }
+.node .nv{ font-size:14px; margin-top:2px; overflow-wrap:anywhere; }
+.node .nv.vacio{ color:var(--red-ink); font-style:italic; }
+.link{ position:relative; margin-left:34px; padding:14px 0 14px 4px; }
+.link::before{ content:""; position:absolute; left:-23px; top:-12px; bottom:-14px; width:3px; background:var(--line-2); }
+.link.si::before{ background:var(--ink); }
+.link.parcial::before{ background:repeating-linear-gradient(to bottom, var(--yellow) 0 8px, transparent 8px 13px); }
+.link.no::before{ background:linear-gradient(to bottom, var(--red) 0 40%, transparent 40% 60%, var(--red) 60%); }
+.link .lq{ font-size:14px; margin-bottom:8px; }
+.seg{ display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; }
+.seg button{ border:0; background:transparent; padding:5px 14px; font-size:13px; cursor:pointer; border-right:1px solid var(--line); }
+.seg button:last-child{ border-right:0; }
+.seg button[aria-pressed="true"][data-v="si"]{ background:var(--ink); color:var(--surface); }
+.seg button[aria-pressed="true"][data-v="parcial"]{ background:var(--yellow); color:#000; }
+.seg button[aria-pressed="true"][data-v="no"]{ background:var(--red); color:#fff; }
+.alerts{ margin:0; padding-left:20px; font-size:14px; }
+.alerts li{ margin:4px 0; }
+
+/* Rubric */
+.rub-table-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--surface); }
+table.rub{ border-collapse:collapse; width:100%; min-width:760px; font-size:13px; }
+table.rub th, table.rub td{ border-bottom:1px solid var(--line-2); border-right:1px solid var(--line-2); padding:10px; vertical-align:top; text-align:left; }
+table.rub th{ background:var(--surface-2); font-weight:600; font-size:12.5px; }
+table.rub td:last-child, table.rub th:last-child{ border-right:0; }
+table.rub td.crit{ font-weight:600; width:200px; }
+table.rub textarea{ min-height:70px; font-size:13px; padding:6px 8px; }
+.crit-list{ display:grid; gap:6px; }
+.crit-row{ display:grid; grid-template-columns:auto 1fr 90px; gap:12px; align-items:center; padding:8px 12px; border:1px solid var(--line-2); border-radius:8px; background:var(--surface); }
+.crit-row input[type=number]{ padding:6px 8px; text-align:right; }
+.crit-row .g{ font-size:12px; color:var(--ink-3); }
+.total{ font-weight:700; }
+
+/* Portfolio */
+.pf-item{ display:grid; grid-template-columns:auto 1fr; gap:4px 12px; padding:14px 16px; border:1px solid var(--line-2); border-radius:10px; background:var(--surface); margin-bottom:10px; }
+.pf-item input[type=checkbox]{ width:18px; height:18px; margin-top:3px; accent-color:var(--red); }
+.pf-item .pn{ font-weight:600; font-size:14.5px; }
+.pf-item .ph{ font-size:13px; color:var(--ink-3); }
+.pf-item .pfields{ grid-column:2; display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+.pf-item .pfields textarea{ min-height:42px; }
+.pf-item.big .pfields{ grid-template-columns:1fr; }
+.pf-item.big textarea{ min-height:110px; }
+.progress{ height:10px; background:var(--line-2); border-radius:999px; overflow:hidden; }
+.progress span{ display:block; height:100%; background:var(--yellow); }
+
+/* Bank */
+.filters{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+details.inst{ background:var(--surface); border:1px solid var(--line-2); border-radius:10px; margin-bottom:8px; }
+details.inst summary{ cursor:pointer; padding:14px 16px; display:flex; gap:12px; align-items:center; list-style:none; }
+details.inst summary::-webkit-details-marker{ display:none; }
+details.inst summary .nm{ font-weight:600; }
+details.inst summary .meta{ margin-left:auto; display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+details.inst[open] summary{ border-bottom:1px solid var(--line-2); }
+details.inst .body{ padding:12px 16px 16px; font-size:14px; }
+details.inst dl{ display:grid; grid-template-columns:150px 1fr; gap:6px 14px; margin:0 0 12px; }
+details.inst dt{ font-weight:600; color:var(--ink-2); }
+details.inst dd{ margin:0; }
+
+/* Panel */
+.ind{ width:100%; border-collapse:collapse; font-size:14px; }
+.ind th, .ind td{ padding:11px 10px; border-bottom:1px solid var(--line-2); text-align:left; vertical-align:top; }
+.ind th{ font-size:12.5px; color:var(--ink-3); font-weight:600; }
+.ind td.r{ font-weight:700; white-space:nowrap; text-align:right; }
+.ind .fx{ color:var(--ink-3); font-size:12.5px; }
+.tbl-wrap{ overflow-x:auto; }
+.doc-table{ width:100%; border-collapse:collapse; font-size:13.5px; min-width:720px; }
+.doc-table th, .doc-table td{ padding:10px; border-bottom:1px solid var(--line-2); text-align:left; vertical-align:middle; }
+.doc-table th{ font-size:12.5px; color:var(--ink-3); font-weight:600; }
+.doc-table tr.sel td{ background:var(--yellow-soft); }
+.ind tr.dif td{ background:var(--yellow-soft); }
+.ind select{ padding:6px 8px; font-size:13px; }
+.review{ border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin:10px 0; background:var(--surface-2); }
+.review h4{ margin:0 0 4px; font-size:15px; }
+.informe{ white-space:pre-wrap; background:var(--surface-2); border:1px solid var(--line-2); border-radius:8px; padding:16px; font-size:14px; min-height:120px; }
+
+.empty{ text-align:center; padding:40px 20px; color:var(--ink-2); }
+.empty p{ max-width:46ch; margin:0 auto 16px; }
+.foot{ margin-top:56px; padding-top:18px; border-top:1px solid var(--line); font-size:12.5px; color:var(--ink-3); }
+
+@media (max-width: 960px){
+  .shell{ grid-template-columns:1fr; }
+  nav.side{ position:fixed; z-index:30; top:calc(env(safe-area-inset-top,0px) + 65px); left:0; bottom:0; width:280px; height:auto; background:var(--bg); transform:translateX(-100%); transition:transform .2s ease; box-shadow:0 0 0 100vmax rgba(0,0,0,0); }
+  nav.side.open{ transform:none; box-shadow:0 0 0 100vmax rgba(0,0,0,.35); }
+  .menu-btn{ display:inline-block; }
+  main{ padding:24px 18px 64px; }
+  .path{ grid-template-columns:repeat(4,1fr); row-gap:20px; }
+  .path li:nth-child(5)::before{ display:none; }
+}
+@media (max-width: 640px){
+  .grid2,.grid3{ grid-template-columns:1fr; }
+  .hero{ padding:26px 20px; }
+  .hero h1{ font-size:27px; }
+  h1{ font-size:25px; }
+  .brand-sep{ display:none; }
+  .brand-logo{ height:32px; }
+  .brand-app{ font-size:13.5px; }
+  .save-state{ display:none; }
+  .lk th{ width:44px; font-size:10.5px; }
+  .cmp{ grid-template-columns:110px 1fr 44px; }
+  .pf-item .pfields{ grid-template-columns:1fr; }
+  details.inst dl{ grid-template-columns:1fr; }
+  .crit-row{ grid-template-columns:auto 1fr 70px; }
+  .path{ grid-template-columns:repeat(3,1fr); }
+  .path li:nth-child(4)::before, .path li:nth-child(7)::before{ display:none; }
+  .path li:nth-child(5)::before{ display:block; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <a class="brand" href="#inicio">
+      <img class="brand-logo" src="logo_uniremhos.png" alt="Universidad UNIREMHOS, Eugenio María de Hostos" width="148" height="40">
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-app">INVESTIGA+ <span>Docente</span></span>
+    </a>
+    <div class="top-right">
+      <span class="save-state" id="saveState" aria-live="polite"></span>
+      <a class="top-link" href="index.html">Programa</a>
+      <span class="who" id="who" hidden></span>
+      <button class="btn sec small" id="logoutBtn" hidden>Salir</button>
+    </div>
+  </div>
+</header>
+
+<section class="auth" id="auth" hidden>
+  <div class="auth-card">
+    <img src="logo_uniremhos.png" alt="Universidad UNIREMHOS, Eugenio María de Hostos" class="auth-logo">
+    <h1 id="authTitle">Inicia sesión</h1>
+    <p class="muted" id="authSub">Programa de Capacitación Docente: Articulación Investigación–Docencia</p>
+    <div class="seg auth-tabs" role="group" aria-label="Tipo de acceso">
+      <button type="button" data-auth="login" aria-pressed="true">Iniciar sesión</button>
+      <button type="button" data-auth="registro" aria-pressed="false">Crear cuenta</button>
+    </div>
+    <form id="authForm" novalidate>
+      <label class="f" for="aEmail">Correo institucional</label>
+      <input id="aEmail" type="email" autocomplete="username" placeholder="nombre.apellido@uniremhos.edu.do" required>
+      <label class="f" for="aPass">Contraseña</label>
+      <input id="aPass" type="password" autocomplete="current-password" minlength="6" required>
+      <div id="aPass2Wrap" hidden><label class="f" for="aPass2">Repite la contraseña</label><input id="aPass2" type="password" autocomplete="new-password" minlength="6"></div>
+      <p class="auth-msg" id="authMsg" role="alert"></p>
+      <button class="btn" type="submit" id="authBtn" style="width:100%;justify-content:center;margin-top:8px">Entrar</button>
+    </form>
+    <button class="linkbtn" id="forgotBtn" type="button" style="margin-top:14px">Olvidé mi contraseña</button>
+    <p class="muted" style="margin-top:18px">¿Primera vez? Elige <strong>Crear cuenta</strong> y usa tu correo @uniremhos.edu.do.</p>
+  </div>
+</section>
+
+<div class="shell" id="shell" hidden>
+  <nav class="side" id="side" aria-label="Secciones"></nav>
+  <main id="main" tabindex="-1"></main>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { initializeFirestore, doc as fsDoc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD3X5-wp5qzmxRtozqlWMHXOS2cMTgoZoM",
+  authDomain: "investiga-docente-uniremhos.firebaseapp.com",
+  projectId: "investiga-docente-uniremhos",
+  storageBucket: "investiga-docente-uniremhos.firebasestorage.app",
+  messagingSenderId: "433090871401",
+  appId: "1:433090871401:web:ee23d07d47146b1488a2f8"
+};
+/* Correos con acceso al panel. Deben coincidir con la lista de las reglas de Firestore. */
+const EVALUADORES = ["keren.ossers@uniremhos.edu.do"];
+const DOMINIO = "@uniremhos.edu.do";
+
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const fdb = initializeFirestore(fbApp, { ignoreUndefinedProperties: true });
+/* ================= Contenido del programa ================= */
+const ENCUESTA = {
+  n:42,
+  bloques:[
+    {q:"Frecuencia con que promueven actividades investigativas", d:[["Todas o casi todas sus asignaturas",29],["Algunas asignaturas",10],["Pocas o ninguna",3]]},
+    {q:"Aplicación de una secuencia metodológica", d:[["De forma estructurada",25],["Parcialmente",11],["Sin secuencia definida",5],["No desarrolla actividades",1]]},
+    {q:"Preparación percibida para guiar investigación", d:[["Muy buena",21],["Buena",19],["Regular",2],["Insuficiente",0]]},
+    {q:"Documentación de las experiencias", d:[["Pautas, materiales, criterios y productos",22],["Algunos documentos o productos",12],["Solo registro y calificación",5],["No conserva documentación",2],["No desarrolla actividades",1]]},
+    {q:"Necesidad de capacitación", d:[["Capacitación amplia",9],["Fortalecer aspectos específicos",19],["Actualización de competencias",12],["No la considera necesaria",2]]}
+  ]
+};
+
+const DIAG = [
+  {id:"frecuencia", q:"¿En qué medida promueves actividades investigativas en tus asignaturas?", o:[["todas","En todas o casi todas mis asignaturas"],["algunas","En algunas asignaturas"],["pocas","Ocasionalmente"],["ninguna","No desarrollo actividades investigativas"]]},
+  {id:"secuencia", q:"Cuando desarrollas una actividad investigativa, ¿sigues una secuencia metodológica (problema, objetivos, método, análisis, conclusiones)?", o:[["completa","Sí, de forma estructurada"],["parcial","Parcialmente"],["sin","Sin una secuencia definida"],["no","No desarrollo estas actividades"]]},
+  {id:"preparacion", q:"¿Cómo valoras tu preparación para guiar investigación desde la docencia?", o:[["muybuena","Muy buena"],["buena","Buena"],["regular","Regular"],["insuficiente","Insuficiente"]]},
+  {id:"documentacion", q:"¿Qué documentación conservas de tus experiencias investigativas?", o:[["completa","Pautas, materiales, criterios y productos"],["algunos","Algunos documentos o productos"],["registro","Solo el registro de la actividad y la calificación"],["ninguna","No conservo documentación"]]},
+  {id:"capacitacion", q:"¿Qué tipo de capacitación necesitas?", o:[["amplia","Capacitación amplia"],["especifica","Fortalecer aspectos específicos"],["actualizacion","Tengo las competencias, pero puedo actualizarlas"],["nonecesaria","No la considero necesaria"]]}
+];
+const ASPECTOS = [
+  ["formulacion","Formular problemas, preguntas y objetivos"],["metodologia","Coherencia y diseño metodológico"],["instrumentos","Selección y diseño de instrumentos"],
+  ["analisis","Análisis e interpretación de datos"],["evaluacion","Rúbricas y evaluación del aprendizaje"],["documentacion","Documentación y portafolio"],
+  ["etica","Ética y protección de datos"],["comunicacion","Comunicación de productos académicos"]
+];
+
+const DIMS = [
+  {id:"formulacion", n:"Formulación", items:[["f1","Formulo problemas de investigación vinculados a los resultados de aprendizaje de mi asignatura."],["f2","Redacto preguntas y objetivos claros, delimitados y alcanzables en el período académico."]]},
+  {id:"coherencia", n:"Coherencia metodológica", items:[["c1","Verifico que el método responda a la pregunta y a los objetivos planteados."],["c2","Oriento a los estudiantes para que sus conclusiones se sustenten en las evidencias obtenidas."]]},
+  {id:"instrumentos", n:"Instrumentos", items:[["n1","Selecciono instrumentos de recolección pertinentes al tipo de estudio."],["n2","Reviso o pruebo los instrumentos antes de que los estudiantes los apliquen."]]},
+  {id:"analisis", n:"Análisis", items:[["a1","Guío a los estudiantes en el análisis e interpretación de la información."],["a2","Uso herramientas digitales adecuadas para organizar y analizar datos."]]},
+  {id:"evaluacion", n:"Evaluación", items:[["e1","Utilizo rúbricas con criterios explícitos para evaluar el proceso investigativo."],["e2","Evalúo el aprendizaje individual dentro de los trabajos grupales."]]},
+  {id:"documentacion", n:"Documentación", items:[["d1","Conservo pautas, instrumentos, criterios y productos de cada experiencia."],["d2","Sistematizo la experiencia para revisarla y mejorarla en el siguiente período."]]},
+  {id:"etica", n:"Ética", items:[["t1","Aplico pautas de consentimiento y protección de datos cuando los estudiantes recogen información de personas."],["t2","Promuevo el uso responsable de fuentes y la citación adecuada."]]}
+];
+const ESCALA = ["Inicial","En desarrollo","Logrado","Destacado"];
+const SAT = [["s1","Utilidad de los talleres"],["s2","Utilidad del acompañamiento y las revisiones"],["s3","Utilidad de esta herramienta"],["s4","Aplicabilidad en mis asignaturas"]];
+
+const CHAIN = [
+  {id:"resultadoAprendizaje", n:"Resultado de aprendizaje"},
+  {id:"problema", n:"Problema"},
+  {id:"pregunta", n:"Pregunta de investigación"},
+  {id:"objetivos", n:"Objetivos", compuesto:["objetivoGeneral","objetivosEspecificos"]},
+  {id:"metodo", n:"Método e instrumentos", compuesto:["tipoEstudio","participantes","instrumentosTxt"]},
+  {id:"evidencias", n:"Evidencias esperadas"},
+  {id:"analisis", n:"Plan de análisis"},
+  {id:"conclusiones", n:"Conclusiones o producto esperado"}
+];
+const LINKS = [
+  "El problema se relaciona directamente con el resultado de aprendizaje de la asignatura.",
+  "La pregunta se deriva del problema y puede responderse en el período académico.",
+  "Los objetivos responden a la pregunta y son verificables.",
+  "El método y los instrumentos permiten alcanzar cada objetivo.",
+  "Las evidencias esperadas son las que el método realmente produce.",
+  "El plan de análisis es adecuado al tipo de evidencia (numérica, textual, documental).",
+  "Las conclusiones esperadas pueden sustentarse en el análisis previsto."
+];
+
+const RUBRICA = [
+  {id:"p1",g:"Proceso investigativo",n:"Planteamiento del problema y la pregunta",l:["El problema es vago o ajeno a la asignatura; no formula pregunta.","Plantea un problema general; la pregunta es amplia o poco delimitada.","Problema pertinente y delimitado; pregunta clara y respondible.","Problema relevante y fundamentado; la pregunta orienta todo el trabajo."]},
+  {id:"p2",g:"Proceso investigativo",n:"Coherencia metodológica",l:["El método no guarda relación con la pregunta ni con los objetivos.","El método se relaciona parcialmente con los objetivos; hay vacíos.","El método permite responder la pregunta y alcanzar los objetivos.","Justifica cada decisión metodológica y su relación con los objetivos."]},
+  {id:"p3",g:"Proceso investigativo",n:"Recolección de información",l:["Información insuficiente o sin instrumento definido.","Instrumentos poco ajustados o aplicación incompleta.","Aplica instrumentos pertinentes y recoge información suficiente.","Aplica instrumentos revisados y documenta con rigor la recolección."]},
+  {id:"p4",g:"Proceso investigativo",n:"Análisis e interpretación",l:["Describe datos sin analizarlos.","Analiza parcialmente; la interpretación es superficial.","Analiza con técnicas adecuadas e interpreta con claridad.","Integra el análisis con la fundamentación y contrasta interpretaciones."]},
+  {id:"p5",g:"Proceso investigativo",n:"Conclusiones",l:["Las conclusiones no se derivan de los resultados.","Las conclusiones se apoyan parcialmente en los resultados.","Responden la pregunta y se sustentan en las evidencias.","Sustentadas, reconocen limitaciones y proponen nuevas preguntas."]},
+  {id:"p6",g:"Proceso investigativo",n:"Comunicación de resultados",l:["Presentación desordenada, sin formato académico.","Comprensible, con errores de estructura o redacción.","Organizada, clara y con formato académico.","Clara y sólida, apta para socializarse en espacios académicos."]},
+  {id:"p7",g:"Proceso investigativo",n:"Ética y uso de fuentes",l:["No cita fuentes o recoge datos sin autorización.","Cita de forma irregular; aplica parcialmente las pautas éticas.","Cita correctamente y aplica consentimiento y confidencialidad.","Gestiona fuentes y datos con rigor y reflexiona sobre sus implicaciones."]},
+  {id:"i1",g:"Aprendizaje individual",n:"Aporte a la formulación",l:["No participa en la formulación.","Participa con aportes limitados.","Aporta ideas pertinentes al problema y la pregunta.","Enriquece de forma sustantiva la formulación."]},
+  {id:"i2",g:"Aprendizaje individual",n:"Justificación de decisiones metodológicas",l:["No explica las decisiones del grupo.","Explica algunas decisiones sin justificarlas.","Justifica las decisiones metodológicas principales.","Justifica decisiones y valora alternativas."]},
+  {id:"i3",g:"Aprendizaje individual",n:"Análisis e interpretación propios",l:["No demuestra comprensión de los resultados.","Interpreta con apoyo y de forma parcial.","Interpreta los resultados de forma autónoma.","Interpreta con profundidad y relaciona con la teoría."]},
+  {id:"i4",g:"Aprendizaje individual",n:"Reflexión sobre el proceso",l:["No reflexiona sobre su aprendizaje.","Su reflexión es descriptiva.","Identifica logros y dificultades del proceso.","Propone mejoras fundamentadas para futuras investigaciones."]}
+];
+const RUB_DEFAULT = ["p1","p2","p3","p4","p5","i2","i3"];
+
+const PORTA = [
+  {id:"pauta",n:"Pauta o guía de la experiencia investigativa",h:"Instrucciones que recibieron los estudiantes: propósito, pasos, fechas y producto esperado.",req:true},
+  {id:"instrumentos",n:"Instrumentos de recolección",h:"Cuestionarios, guías de entrevista u observación, fichas de registro.",req:true},
+  {id:"rubrica",n:"Rúbrica o criterios de evaluación",h:"Puedes descargarla desde el paso 5 de esta herramienta.",req:true},
+  {id:"cronograma",n:"Cronograma de la experiencia",h:"Semanas y entregas parciales dentro del período.",req:true},
+  {id:"muestras",n:"Muestras de productos de estudiantes",h:"Al menos tres muestras con distinto nivel de logro, sin datos identificables.",req:true},
+  {id:"consentimiento",n:"Consentimiento o autorizaciones",h:"Obligatorio cuando los estudiantes recogen información de personas o instituciones.",req:false,cond:true},
+  {id:"resultados",n:"Resultados de evaluación agregados",h:"Distribución de calificaciones o niveles de logro del grupo.",req:true},
+  {id:"reflexion",n:"Reflexión docente y ajustes para el próximo período",h:"Qué funcionó, qué no y qué cambiarás.",req:true,big:true},
+  {id:"producto",n:"Producto académico comunicado o postulado",h:"Póster, ponencia, artículo o presentación en un espacio institucional. Opcional.",req:false}
+];
+
+const BANCO = [
+  {id:"cuestionario",n:"Cuestionario o encuesta",e:["Cuantitativo","Mixto"],f:"Recolección",uso:"Medir opiniones, conocimientos, frecuencias o actitudes en grupos numerosos.",rec:"Usa preguntas cerradas y claras; prueba el cuestionario con 3 a 5 personas antes de aplicarlo.",dig:"Microsoft Forms o Google Forms; exportación a Excel.",et:"Incluye el consentimiento al inicio y evita pedir datos identificables innecesarios."},
+  {id:"entrevista",n:"Entrevista semiestructurada",e:["Cualitativo"],f:"Recolección",uso:"Profundizar en experiencias, percepciones y significados.",rec:"Prepara una guía de 6 a 10 preguntas abiertas; registra fecha, lugar y duración.",dig:"Grabadora del celular y transcripción automática en Word o Teams.",et:"Graba solo con autorización; anonimiza las transcripciones."},
+  {id:"observacion",n:"Guía de observación",e:["Cualitativo","Mixto"],f:"Recolección",uso:"Registrar conductas o procesos en su contexto: aula, laboratorio, comunidad, centro de salud.",rec:"Define las categorías antes de observar y usa el mismo formato en cada sesión.",dig:"Lista en Forms o tabla de registro en Excel.",et:"Solicita autorización del lugar y de las personas observadas."},
+  {id:"grupofocal",n:"Grupo focal",e:["Cualitativo"],f:"Recolección",uso:"Explorar opiniones colectivas sobre un tema en grupos de 6 a 10 personas.",rec:"Asigna moderador y relator; limita la sesión a 60–90 minutos.",dig:"Microsoft Teams y matriz de categorías en Excel.",et:"Acuerda la confidencialidad entre participantes."},
+  {id:"documental",n:"Análisis documental",e:["Documental"],f:"Recolección",uso:"Revisar normas, políticas, expedientes, informes o prensa.",rec:"Usa una ficha de registro por documento con criterios definidos.",dig:"Excel para fichas; Zotero para organizar fuentes.",et:"Usa documentos públicos o con autorización de acceso."},
+  {id:"bibliografica",n:"Revisión bibliográfica",e:["Documental"],f:"Recolección",uso:"Construir la fundamentación teórica o el estado del arte.",rec:"Define palabras clave y criterios de inclusión; consulta Google Académico, SciELO y Redalyc.",dig:"Zotero (gratuito) para gestionar referencias en APA.",et:"Cita todas las fuentes y evita el plagio."},
+  {id:"caso",n:"Estudio de caso",e:["Cualitativo","Mixto"],f:"Recolección",uso:"Analizar en profundidad una persona, organización o situación concreta.",rec:"Combina varias fuentes: entrevista, documentos y observación.",dig:"OneNote o Word para el expediente del caso.",et:"Anonimiza el caso y protege los datos sensibles."},
+  {id:"experimental",n:"Práctica experimental o simulación",e:["Cuantitativo"],f:"Recolección",uso:"Probar relaciones entre variables en condiciones controladas, incluida la simulación clínica.",rec:"Redacta un protocolo y una hoja de registro de mediciones.",dig:"Excel para registrar y graficar mediciones.",et:"Aplica las normas de bioseguridad y del laboratorio."},
+  {id:"cotejo",n:"Lista de cotejo o escala de valoración",e:["Mixto"],f:"Recolección",uso:"Verificar la presencia de criterios o desempeños observables.",rec:"Redacta criterios observables, uno por fila.",dig:"Microsoft Forms o Excel.",et:"Informa a los participantes qué se evalúa."},
+  {id:"diario",n:"Diario de campo",e:["Cualitativo"],f:"Recolección",uso:"Registrar observaciones y reflexiones durante el proceso.",rec:"Separa lo observado de la interpretación en cada entrada.",dig:"OneNote o Word compartido.",et:"No registres nombres de terceros sin autorización."},
+  {id:"descriptivo",n:"Análisis estadístico descriptivo",e:["Cuantitativo"],f:"Análisis",uso:"Resumir datos numéricos con frecuencias, porcentajes, medias y gráficos.",rec:"Limpia la base antes de analizar y documenta cada decisión.",dig:"Excel (tablas dinámicas) o JASP (gratuito).",et:"Presenta los resultados en forma agregada."},
+  {id:"contenido",n:"Análisis de contenido por categorías",e:["Cualitativo","Documental"],f:"Análisis",uso:"Identificar temas y patrones en textos, entrevistas o documentos.",rec:"Define categorías iniciales y permite que surjan nuevas; usa citas como evidencia.",dig:"Matriz en Excel o Taguette (gratuito).",et:"Usa citas anonimizadas."}
+];
+
+const TALLERES = [
+  ["Taller 1","Del problema a los objetivos","Vincular la experiencia investigativa con los resultados de aprendizaje; formular problema, pregunta y objetivos.","Pasos 3 y 4"],
+  ["Taller 2","Método, instrumentos y ética","Elegir el diseño y los instrumentos pertinentes; prever el análisis y las pautas éticas.","Paso 3 y banco de instrumentos"],
+  ["Taller 3","Evaluación y documentación","Construir rúbricas de proceso y de aprendizaje individual; organizar el portafolio mínimo.","Pasos 5 y 6"]
+];
+
+const NAV = [
+  {g:"Programa", items:[{id:"inicio",n:"Inicio"}]},
+  {g:"Tu ruta", steps:true, items:[
+    {id:"autodiagnostico",n:"Autodiagnóstico",k:1},
+    {id:"evaluacion-inicial",n:"Evaluación inicial",k:2},
+    {id:"unidad",n:"Unidad investigativa",k:3},
+    {id:"coherencia",n:"Matriz de coherencia",k:4},
+    {id:"rubrica",n:"Rúbrica",k:5},
+    {id:"portafolio",n:"Portafolio",k:6},
+    {id:"evaluacion-final",n:"Evaluación final",k:7}
+  ]},
+  {g:"Recursos", items:[{id:"instrumentos",n:"Banco de instrumentos"}]},
+  {g:"Coordinación", coord:true, items:[{id:"panel",n:"Panel de seguimiento"}]}
+];
+
+/* ================= Estado ================= */
+const LS_KEY = "investiga-docente:v1";
+const LS_REV = "investiga-docente:rev:v1";
+const S = {
+  mode:"local", uid:null, canEdit:false, isOwner:false, readonly:false,
+  db:null, user:null, sample:null, downloads:null,
+  me:null, review:{unidades:{}}, all:{}, reviews:{},
+  view:"inicio", unidad:null, filtro:"Todos", editDesc:false, panelSel:null, informe:"",
+  saveTimer:null, saving:false, again:false, loadTimer:null, loaded:false
+};
+
+function blankDoc(){
+  return {perfil:{nombre:"",facultad:"",recinto:"Santo Domingo",asignaturas:""},
+    diagnostico:{r:{},aspectos:{}}, unidades:{}, evaluacion:{pre:{r:{}},post:{r:{}}}, satisfaccion:{r:{},comentario:""},
+    creado:Date.now(), actualizado:Date.now()};
+}
+function normalize(d){
+  const b = blankDoc();
+  d = d || {};
+  return {
+    perfil:Object.assign(b.perfil, d.perfil||{}),
+    diagnostico:{r:Object.assign({}, d.diagnostico&&d.diagnostico.r), aspectos:Object.assign({}, d.diagnostico&&d.diagnostico.aspectos), fecha:d.diagnostico&&d.diagnostico.fecha},
+    unidades:Object.assign({}, d.unidades||{}),
+    evaluacion:{pre:{r:Object.assign({}, d.evaluacion&&d.evaluacion.pre&&d.evaluacion.pre.r), fecha:d.evaluacion&&d.evaluacion.pre&&d.evaluacion.pre.fecha},
+               post:{r:Object.assign({}, d.evaluacion&&d.evaluacion.post&&d.evaluacion.post.r), fecha:d.evaluacion&&d.evaluacion.post&&d.evaluacion.post.fecha}},
+    satisfaccion:{r:Object.assign({}, d.satisfaccion&&d.satisfaccion.r), comentario:(d.satisfaccion&&d.satisfaccion.comentario)||""},
+    creado:d.creado||b.creado, actualizado:d.actualizado||b.actualizado
+  };
+}
+function lsGet(k){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+
+S.me = normalize(null);
+S.review = {unidades:{}};
+
+/* ================= Utilidades ================= */
+const $ = (s,r=document)=>r.querySelector(s);
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+function uid(){ return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function pct(a,b){ return b ? Math.round(a*100/b) : 0; }
+function fmtPct(a,b){ return b ? pct(a,b) + "%" : "—"; }
+function fecha(t){ if(!t) return ""; try{ return new Date(t).toLocaleDateString("es-DO",{day:"numeric",month:"short",year:"numeric"}); }catch(e){ return ""; } }
+function filled(v){ return typeof v === "string" ? v.trim().length > 0 : !!v; }
+function trunc(s,n){ s = String(s||"").trim(); return s.length > n ? s.slice(0,n-1) + "…" : s; }
+
+function setSave(t){ const el = $("#saveState"); if(el) el.textContent = t; }
+
+/* ================= Cálculos ================= */
+function diagCompleto(d){ return DIAG.every(q => d && d.r && d.r[q.id]); }
+function ruta(d){
+  if(!diagCompleto(d)) return null;
+  const r = d.r;
+  const focos = [];
+  if(r.secuencia !== "completa") focos.push(["Secuencia metodológica","Talleres 1 y 2 · pasos 3 y 4"]);
+  if(r.documentacion !== "completa") focos.push(["Documentación de evidencias","Taller 3 · paso 6"]);
+  if(r.preparacion === "regular" || r.preparacion === "insuficiente") focos.push(["Acompañamiento metodológico individual","Revisiones durante el diseño"]);
+  Object.keys(d.aspectos||{}).filter(k=>d.aspectos[k]).forEach(k=>{
+    const a = ASPECTOS.find(x=>x[0]===k); if(!a) return;
+    const map = {formulacion:"Taller 1 · paso 3",metodologia:"Taller 2 · paso 4",instrumentos:"Taller 2 · banco de instrumentos",analisis:"Taller 2 · banco de instrumentos",evaluacion:"Taller 3 · paso 5",documentacion:"Taller 3 · paso 6",etica:"Taller 2 · paso 3",comunicacion:"Paso 6 · producto académico"};
+    if(!focos.some(f=>f[0]===a[1])) focos.push([a[1], map[k]]);
+  });
+  let tipo, desc;
+  if(r.capacitacion === "amplia" || r.secuencia === "sin" || r.secuencia === "no" || r.documentacion === "ninguna" || r.documentacion === "registro" || r.frecuencia === "ninguna"){
+    tipo = "Ruta de acompañamiento amplio";
+    desc = "Participa en los tres talleres y solicita revisión de tu unidad en cada etapa del diseño.";
+  } else if(r.capacitacion === "especifica" || r.secuencia === "parcial" || r.documentacion === "algunos"){
+    tipo = "Ruta de fortalecimiento focalizado";
+    desc = "Participa en los talleres y concentra tu trabajo en los aspectos señalados abajo.";
+  } else {
+    tipo = "Ruta de actualización";
+    desc = "Tu práctica ya está estructurada. Usa la herramienta para sistematizarla y compartirla como referencia.";
+  }
+  return {tipo, desc, focos};
+}
+function evalCompleta(e){ return DIMS.every(d=>d.items.every(i=>e && e.r && e.r[i[0]])); }
+function evalAvance(e){ let n=0,t=0; DIMS.forEach(d=>d.items.forEach(i=>{ t++; if(e&&e.r&&e.r[i[0]]) n++; })); return [n,t]; }
+function dimProm(e){ const o = {}; DIMS.forEach(d=>{ const v = d.items.map(i=>e&&e.r?Number(e.r[i[0]]):0).filter(Boolean); o[d.id] = v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; }); return o; }
+function promGeneral(e){ const v = Object.values(dimProm(e)).filter(x=>x!=null); return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; }
+
+const CORE = ["titulo","asignatura","resultadoAprendizaje","problema","pregunta","objetivoGeneral","objetivosEspecificos","enfoque","tipoEstudio","participantes","evidencias","analisis","conclusiones"];
+function instrumentosTxt(u){ const ids = Object.keys(u.instrumentos||{}).filter(k=>u.instrumentos[k]); const nombres = ids.map(id=>(BANCO.find(b=>b.id===id)||{}).n).filter(Boolean); if(filled(u.otrosInstrumentos)) nombres.push(u.otrosInstrumentos.trim()); return nombres.join(", "); }
+function unidadAvance(u){ let n = CORE.filter(k=>filled(u[k])).length; const inst = instrumentosTxt(u) ? 1 : 0; return pct(n+inst, CORE.length+1); }
+function nodoValor(u, c){
+  if(c.id === "objetivos"){ return [u.objetivoGeneral, u.objetivosEspecificos].filter(filled).join(" · "); }
+  if(c.id === "metodo"){ return [u.enfoque, u.tipoEstudio, u.participantes, instrumentosTxt(u)].filter(filled).join(" · "); }
+  return u[c.id] || "";
+}
+function cohScore(l){ l = l || {}; let s=0, n=0; LINKS.forEach((_,i)=>{ const v = l["l"+i]; if(v){ n++; s += v==="si"?1:v==="parcial"?0.5:0; } }); return {score: n ? Math.round(s*100/LINKS.length) : null, rated:n}; }
+function coherencia(u){ return cohScore(u.coherencia); }
+function coherenciaExt(u, rev){ const r = revisionDe(u.id, rev); return cohScore(r && r.coherencia); }
+const VAL_TXT = {"":"—", si:"Sí", parcial:"Parcial", no:"No"};
+const VAL_TAG = {si:"ok", parcial:"warn", no:"bad"};
+function rubricaDe(u){ if(!u.rubrica){ const c = {}; RUB_DEFAULT.forEach(id=>c[id]={on:true,peso:0}); const p = Math.floor(100/RUB_DEFAULT.length); RUB_DEFAULT.forEach((id,i)=>c[id].peso = i===0 ? 100 - p*(RUB_DEFAULT.length-1) : p); return {criterios:c, nuevo:true}; } return u.rubrica; }
+function rubricaTotal(r){ return Object.values(r.criterios||{}).filter(c=>c.on).reduce((a,c)=>a+(Number(c.peso)||0),0); }
+function rubricaLista(u){ const r = u.rubrica; return !!r && !r.nuevo && rubricaTotal(r)===100 && Object.values(r.criterios).filter(c=>c.on).length >= 3; }
+function portaAvance(u){ const p = u.portafolio||{}; const req = PORTA.filter(x=>x.req || (x.cond && u.etica && u.etica.personas)); const n = req.filter(x=>p[x.id] && p[x.id].ok).length; return {n, t:req.length, pct:pct(n, req.length), completo: n===req.length && req.length>0}; }
+function listaUnidades(doc){ return Object.entries(doc.unidades||{}).map(([id,u])=>Object.assign({id},u)).sort((a,b)=>(a.creado||0)-(b.creado||0)); }
+
+function pasoEstado(k, doc){
+  doc = doc || S.me;
+  const us = listaUnidades(doc);
+  switch(k){
+    case 1: { const n = DIAG.filter(q=>doc.diagnostico.r[q.id]).length; return n===DIAG.length?"hecho":n?"curso":""; }
+    case 2: { const [n,t] = evalAvance(doc.evaluacion.pre); return n===t?"hecho":n?"curso":""; }
+    case 3: if(us.some(u=>unidadAvance(u)>=90)) return "hecho"; return us.length?"curso":"";
+    case 4: if(us.some(u=>coherencia(u).rated===LINKS.length)) return "hecho"; return us.some(u=>coherencia(u).rated)?"curso":"";
+    case 5: if(us.some(rubricaLista)) return "hecho"; return us.some(u=>u.rubrica)?"curso":"";
+    case 6: if(us.some(u=>portaAvance(u).completo)) return "hecho"; return us.some(u=>portaAvance(u).n)?"curso":"";
+    case 7: { if(!evalCompleta(doc.evaluacion.pre)) return ""; const [n,t] = evalAvance(doc.evaluacion.post); return n===t?"hecho":n?"curso":""; }
+  }
+  return "";
+}
+const EST_TXT = {hecho:"Completado",curso:"En curso","":"Pendiente"};
+
+function revisionDe(unitId, rev){ rev = rev || S.review; return rev && rev.unidades && rev.unidades[unitId]; }
+const REV_EST = {revision:["En revisión","warn"], ajustes:["Requiere ajustes","bad"], viable:["Viable","ok"]};
+function tagRevision(u, rev){
+  const r = revisionDe(u.id, rev);
+  if(r && REV_EST[r.estado]) return `<span class="tag ${REV_EST[r.estado][1]}">${REV_EST[r.estado][0]}</span>`;
+  if(u.enviada) return `<span class="tag warn">Enviada a revisión</span>`;
+  return `<span class="tag">Borrador</span>`;
+}
+
+/* ================= Guardado ================= */
+function touch(){
+  if(S.readonly) return;
+  S.me.actualizado = Date.now();
+  clearTimeout(S.saveTimer);
+  setSave("Guardando…");
+  S.saveTimer = setTimeout(flush, 700);
+}
+async function flush(){
+  S.saveTimer = null;
+  if(S.saving){ S.again = true; return; }
+  S.saving = true;
+  const body = clone(S.me);
+  try{
+    if(S.mode === "db"){
+      try{ await setDoc(fsDoc(fdb, "docentes", S.uid), body); }
+      catch(e){
+        if(e && e.code === "unavailable"){ await new Promise(r=>setTimeout(r, 600 + Math.random()*800)); await setDoc(fsDoc(fdb, "docentes", S.uid), body); }
+        else throw e;
+      }
+      setSave("Cambios guardados");
+    } else {
+      setSave(lsSet(LS_KEY, body) ? "Guardado en este navegador" : "No se pudo guardar en este navegador");
+    }
+  }catch(e){
+    if(e && e.code === "permission-denied"){ S.readonly = true; setSave("Sin permiso para guardar"); render(); }
+    else if(e && e.code === "resource-exhausted"){ setSave("No se pudo guardar: se alcanzó el límite diario. Inténtalo mañana."); }
+    else { setSave("No se pudo guardar. Revisa tu conexión; reintentaremos con tu próximo cambio."); }
+  }
+  S.saving = false;
+  if(S.again){ S.again = false; flush(); }
+}
+
+/* ================= Navegación ================= */
+function showCoord(){ return S.canEdit; }
+function renderNav(){
+  const html = NAV.filter(g=>!g.coord || showCoord()).map(g=>{
+    const items = g.items.map(it=>{
+      const cur = S.view === it.id ? ' aria-current="page"' : "";
+      let lead;
+      if(it.k){ const st = pasoEstado(it.k); lead = `<span class="dot ${st}" aria-hidden="true">${st==="hecho"?"✓":it.k}</span>`; }
+      else lead = `<span class="ico" aria-hidden="true">${it.id==="inicio"?"⌂":it.id==="panel"?"▦":"☰"}</span>`;
+      const st = it.k ? `<span class="visually-hidden" style="position:absolute;left:-9999px">${EST_TXT[pasoEstado(it.k)]}</span>` : "";
+      return `<li class="nav-item"><a href="#${it.id}"${cur}>${lead}<span>${esc(it.n)}</span>${st}</a></li>`;
+    }).join("");
+    return `<div class="nav-group"><p class="nav-title">${esc(g.g)}</p><ul class="nav-list ${g.steps?"nav-steps":""}">${items}</ul></div>`;
+  }).join("");
+  $("#side").innerHTML = html;
+}
+
+function viewFromHash(){
+  const h = (location.hash||"").replace(/^#/,"");
+  const all = NAV.flatMap(g=>g.items.map(i=>i.id));
+  if(h === "panel" && !showCoord()) return "inicio";
+  return all.includes(h) ? h : "inicio";
+}
+window.addEventListener("hashchange", ()=>{ S.view = viewFromHash(); closeMenu(); render(true); });
+
+function closeMenu(){ $("#side").classList.remove("open"); $("#menuBtn").setAttribute("aria-expanded","false"); }
+$("#menuBtn").addEventListener("click", ()=>{ const o = $("#side").classList.toggle("open"); $("#menuBtn").setAttribute("aria-expanded", o?"true":"false"); });
+
+/* ================= Vistas ================= */
+function banners(){
+  let b = "";
+  if(S.readonly) b += `<div class="banner"><span>ⓘ</span><span><strong>No puedes guardar cambios.</strong> Inicia sesión con tu correo institucional ${DOMINIO}. Si ya lo hiciste, avisa a la coordinación.</span></div>`;
+  if(S.esEvaluador && !S.canEdit) b += `<div class="banner"><span>ⓘ</span><span><strong>Verifica tu correo para abrir el panel de seguimiento.</strong> Te enviamos un enlace a ${esc(S.email)}. <button class="linkbtn" data-action="reenviarVerif">Reenviar enlace</button> · <button class="linkbtn" data-action="yaVerifique">Ya lo verifiqué</button></span></div>`;
+  return b;
+}
+
+function vInicio(){
+  const st = [1,2,3,4,5,6,7].map(k=>pasoEstado(k));
+  const pasos = NAV[1].items.map((it,i)=>`<li class="${st[i]}"><a href="#${it.id}"><span class="dot ${st[i]}">${st[i]==="hecho"?"✓":it.k}</span><span>${esc(it.n)}</span><span class="st">${EST_TXT[st[i]]}</span></a></li>`).join("");
+  const p = S.me.perfil;
+  const perfil = `
+    <div class="panel">
+      <h2>${p.nombre ? "Tu perfil" : "Empieza por tu perfil"}</h2>
+      <div class="grid2">
+        <div><label class="f" for="pf-n">Nombre completo</label><input id="pf-n" type="text" data-bind="perfil.nombre" value="${esc(p.nombre)}" autocomplete="name"></div>
+        <div><label class="f" for="pf-f">Escuela o facultad</label><input id="pf-f" type="text" data-bind="perfil.facultad" value="${esc(p.facultad)}"></div>
+        <div><label class="f" for="pf-r">Recinto</label><select id="pf-r" data-bind="perfil.recinto">${["Santo Domingo","San Cristóbal"].map(r=>`<option${p.recinto===r?" selected":""}>${r}</option>`).join("")}</select></div>
+        <div><label class="f" for="pf-a">Asignaturas que impartes</label><input id="pf-a" type="text" data-bind="perfil.asignaturas" value="${esc(p.asignaturas)}" placeholder="Separadas por comas"></div>
+      </div>
+    </div>`;
+  const bars = ENCUESTA.bloques.map(b=>{
+    const tot = b.d.reduce((a,x)=>a+x[1],0);
+    const segs = b.d.map((x,i)=>x[1]?`<span class="c${i+1}" style="width:${x[1]*100/tot}%" title="${esc(x[0])}: ${x[1]}"></span>`:"").join("");
+    const leg = b.d.map((x,i)=>`<span><i class="c${i+1}"></i>${esc(x[0])}: <strong>${x[1]}</strong> (${(x[1]*100/ENCUESTA.n).toFixed(1)}%)</span>`).join("");
+    return `<div class="stack"><div class="q">${esc(b.q)}</div><div class="bar" role="img" aria-label="${esc(b.q)}">${segs}</div><div class="legend">${leg}</div></div>`;
+  }).join("");
+  return `<div class="wrap">${banners()}
+    <section class="hero">
+      <svg class="arcs" viewBox="0 0 300 300" aria-hidden="true"><g fill="none" stroke-width="14"><circle cx="150" cy="150" r="136" stroke="#FBAD18"/><circle cx="150" cy="150" r="112" stroke="#ED1C24"/><circle cx="150" cy="150" r="88" stroke="#D3D5D6"/><circle cx="150" cy="150" r="64" stroke="#FBAD18" opacity=".55"/></g></svg>
+      <h1>Fortalece la investigación que ya ocurre en tus asignaturas</h1>
+      <p class="lead">Programa de Capacitación Docente: Articulación Investigación–Docencia. Aquí diseñas, revisas, evalúas y documentas una experiencia investigativa de tu asignatura, paso a paso.</p>
+      <ol class="path" style="margin-top:26px">${pasos}</ol>
+    </section>
+    ${perfil}
+    <div class="panel">
+      <h2>Talleres del programa</h2>
+      <p class="muted">Tres talleres de 2 horas (6 horas en total), complementados con revisiones y acompañamiento durante el diseño y la implementación.</p>
+      <div class="tbl-wrap"><table class="talleres"><thead><tr><th>Sesión</th><th>Tema</th><th>Propósito</th><th>En la herramienta</th></tr></thead><tbody>
+      ${TALLERES.map(t=>`<tr><td>${t[0]}</td><td><strong>${t[1]}</strong></td><td>${t[2]}</td><td>${t[3]}</td></tr>`).join("")}
+      </tbody></table></div>
+    </div>
+    <div class="panel">
+      <h2>Punto de partida</h2>
+      <p>Encuesta aplicada a ${ENCUESTA.n} docentes (41 del recinto Santo Domingo y 1 de San Cristóbal). Los resultados describen principalmente al recinto Santo Domingo.</p>
+      ${bars}
+      <div class="panel-note"><strong>Diagnóstico central:</strong> la investigación ya está presente en la práctica docente (92.9% la incorpora). La oportunidad está en la secuencia metodológica, la evaluación, la documentación y la sistematización de evidencias.</div>
+    </div>
+    ${foot()}
+  </div>`;
+}
+
+function stepHead(k, titulo, texto){ return `<div class="step-head"><div class="step-num" aria-hidden="true">${k}</div><div><h1>${titulo}</h1><p>${texto}</p></div></div>`; }
+
+function vDiag(){
+  const d = S.me.diagnostico;
+  const qs = DIAG.map(q=>`<fieldset><legend>${esc(q.q)}</legend><div class="opts">${q.o.map(o=>`<label class="opt"><input type="radio" name="dg-${q.id}" value="${o[0]}" data-bind="diagnostico.r.${q.id}"${d.r[q.id]===o[0]?" checked":""}><span>${esc(o[1])}</span></label>`).join("")}</div></fieldset>`).join("");
+  const asp = `<fieldset><legend>¿Qué aspectos te gustaría fortalecer? <span class="muted">(opcional, puedes elegir varios)</span></legend>${ASPECTOS.map(a=>`<label class="chk"><input type="checkbox" data-bind="diagnostico.aspectos.${a[0]}"${d.aspectos[a[0]]?" checked":""}><span>${esc(a[1])}</span></label>`).join("")}</fieldset>`;
+  return `<div class="wrap">${banners()}${stepHead(1,"Autodiagnóstico","Responde las mismas preguntas de la encuesta institucional. Al terminar verás la ruta de formación que mejor se ajusta a tu práctica actual.")}
+    <div class="panel">${qs}${asp}</div>
+    <div id="diagResult">${diagResultado()}</div>
+    ${foot()}</div>`;
+}
+function diagResultado(){
+  const r = ruta(S.me.diagnostico);
+  if(!r){ const n = DIAG.filter(q=>S.me.diagnostico.r[q.id]).length; return `<p class="muted">Respondidas ${n} de ${DIAG.length} preguntas.</p>`; }
+  return `<div class="result"><h3>${esc(r.tipo)}</h3><p>${esc(r.desc)}</p>
+    ${r.focos.length?`<p style="margin:14px 0 0"><strong>Énfasis recomendados</strong></p><ul class="focus-list">${r.focos.map(f=>`<li><strong>${esc(f[0])}</strong> · ${esc(f[1])}</li>`).join("")}</ul>`:""}
+    <div class="actions"><a class="btn" href="#evaluacion-inicial">Continuar con la evaluación inicial</a></div></div>`;
+}
+
+function vEval(kind){
+  const isPost = kind === "post";
+  const e = S.me.evaluacion[kind];
+  const k = isPost ? 7 : 2;
+  const titulo = isPost ? "Evaluación final" : "Evaluación inicial";
+  const texto = isPost
+    ? "Responde el mismo instrumento que al inicio. La comparación muestra el cambio en cada dimensión y orienta el acompañamiento."
+    : "Valora tu desempeño actual en siete dimensiones. Responderás este mismo instrumento al final del programa para comparar los resultados.";
+  if(isPost && !evalCompleta(S.me.evaluacion.pre)){
+    return `<div class="wrap">${banners()}${stepHead(k,titulo,texto)}<div class="panel empty"><p>La evaluación final se habilita cuando completas la evaluación inicial. Así ambas mediciones usan el mismo instrumento.</p><a class="btn" href="#evaluacion-inicial">Ir a la evaluación inicial</a></div>${foot()}</div>`;
+  }
+  const rows = DIMS.map(d=>`<tr class="dimrow"><td colspan="5">${esc(d.n)}</td></tr>` + d.items.map(it=>`<tr><td>${esc(it[1])}</td>${[1,2,3,4].map(v=>`<td class="c"><input type="radio" name="${kind}-${it[0]}" value="${v}" aria-label="${esc(it[1])}: ${ESCALA[v-1]}" data-bind="evaluacion.${kind}.r.${it[0]}" data-num="1"${Number(e.r[it[0]])===v?" checked":""}></td>`).join("")}</tr>`).join("")).join("");
+  const sat = isPost ? `<div class="panel"><h2>Satisfacción con el programa</h2>
+    <table class="lk"><thead><tr><th scope="col">Del 1 (muy baja) al 5 (muy alta)</th>${[1,2,3,4,5].map(n=>`<th scope="col" style="width:52px">${n}</th>`).join("")}</tr></thead><tbody>
+    ${SAT.map(s=>`<tr><td>${esc(s[1])}</td>${[1,2,3,4,5].map(v=>`<td class="c"><input type="radio" name="sat-${s[0]}" value="${v}" aria-label="${esc(s[1])}: ${v}" data-bind="satisfaccion.r.${s[0]}" data-num="1"${Number(S.me.satisfaccion.r[s[0]])===v?" checked":""}></td>`).join("")}</tr>`).join("")}
+    </tbody></table>
+    <label class="f" for="sat-c">Comentarios y sugerencias</label><textarea id="sat-c" data-bind="satisfaccion.comentario">${esc(S.me.satisfaccion.comentario)}</textarea></div>` : "";
+  return `<div class="wrap">${banners()}${stepHead(k,titulo,texto)}
+    <div class="panel"><div class="tbl-wrap"><table class="lk"><thead><tr><th scope="col">Afirmación</th>${ESCALA.map(x=>`<th scope="col">${x}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div></div>
+    <div id="evalResult">${evalResultado(kind)}</div>
+    ${sat}
+    ${foot()}</div>`;
+}
+function cmpBars(pre, post){
+  const a = dimProm(pre), b = post ? dimProm(post) : null;
+  return `<div class="cmp">${DIMS.map(d=>{
+    const va = a[d.id], vb = b ? b[d.id] : null;
+    const w = v => v==null ? 0 : (v/4*100);
+    const track = b ? `<span class="pre" style="width:${w(va)}%"></span><span class="post" style="width:${w(vb)}%"></span>` : `<span class="solo" style="width:${w(va)}%"></span>`;
+    const num = b ? (va!=null&&vb!=null ? ((vb-va)>=0?"+":"") + (vb-va).toFixed(1) : "—") : (va!=null ? va.toFixed(1) : "—");
+    return `<span>${esc(d.n)}</span><div class="track">${track}</div><span class="num">${num}</span>`;
+  }).join("")}</div>`;
+}
+function evalResultado(kind){
+  const pre = S.me.evaluacion.pre, post = S.me.evaluacion.post;
+  const [n,t] = evalAvance(S.me.evaluacion[kind]);
+  if(n < t) return `<p class="muted">Respondidas ${n} de ${t} afirmaciones.</p>`;
+  if(kind === "pre") return `<div class="panel"><h2>Tu perfil inicial</h2><p class="muted">Promedio por dimensión, escala de 1 a 4.</p>${cmpBars(pre,null)}<div class="actions"><a class="btn" href="#unidad">Diseñar mi unidad investigativa</a></div></div>`;
+  return `<div class="panel"><h2>Cambio entre la evaluación inicial y la final</h2><p class="muted">Barra gris: inicial. Barra roja: final. La cifra indica la diferencia en la escala de 1 a 4.</p>${cmpBars(pre,post)}</div>`;
+}
+
+function unitBar(destino){
+  const us = listaUnidades(S.me);
+  if(!us.length) return "";
+  if(!S.unidad || !S.me.unidades[S.unidad]) S.unidad = us[us.length-1].id;
+  return `<div class="unitbar"><span class="lbl">Unidad:</span>${us.map(u=>`<button class="uchip" data-action="pick" data-id="${u.id}" aria-pressed="${u.id===S.unidad}">${esc(u.titulo || "Unidad sin título")}</button>`).join("")}${destino==="unidad"?`<button class="btn sec small" data-action="nueva">+ Nueva unidad</button>`:""}</div>`;
+}
+function noUnidad(k, titulo, texto){
+  return `<div class="wrap">${banners()}${stepHead(k,titulo,texto)}<div class="panel empty"><p>Primero crea una unidad investigativa. Los pasos siguientes trabajan sobre ella.</p><a class="btn" href="#unidad" data-action="nueva">Crear unidad investigativa</a></div>${foot()}</div>`;
+}
+function curU(){ return S.unidad && S.me.unidades[S.unidad] ? S.me.unidades[S.unidad] : null; }
+
+function fld(id,label,help,type){
+  const u = curU(); const v = u[id] || "";
+  const h = help ? `<small>${help}</small>` : "";
+  if(type === "area") return `<label class="f" for="u-${id}">${label}${h}</label><textarea id="u-${id}" data-ubind="${id}">${esc(v)}</textarea>`;
+  return `<label class="f" for="u-${id}">${label}${h}</label><input id="u-${id}" type="text" data-ubind="${id}" value="${esc(v)}">`;
+}
+function vUnidad(){
+  const tx = "Describe la experiencia investigativa que integrarás a tu asignatura. Cada campo alimenta la matriz de coherencia, la rúbrica y el portafolio.";
+  if(!listaUnidades(S.me).length) return noUnidad(3,"Unidad investigativa",tx);
+  const bar = unitBar("unidad");
+  const u = curU();
+  const rev = revisionDe(S.unidad);
+  const et = u.etica || {};
+  const insts = BANCO.filter(b=>b.f==="Recolección").map(b=>`<label class="chk"><input type="checkbox" data-ubind="instrumentos.${b.id}"${u.instrumentos&&u.instrumentos[b.id]?" checked":""}><span>${esc(b.n)}</span></label>`).join("");
+  return `<div class="wrap">${banners()}${stepHead(3,"Unidad investigativa",tx)}${bar}
+    ${rev && rev.comentario ? `<div class="banner"><span>✎</span><span><strong>Retroalimentación de la coordinación</strong> (${esc(REV_EST[rev.estado]?REV_EST[rev.estado][0]:"")}, ${fecha(rev.fecha)}): ${esc(rev.comentario)}</span></div>` : ""}
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><span>Avance del diseño: <strong id="uAv">${unidadAvance(u)}%</strong></span>${tagRevision(Object.assign({id:S.unidad},u))}</div>
+      <h2 style="margin-top:22px">Datos generales</h2>
+      ${fld("titulo","Título de la experiencia")}
+      <div class="grid2"><div>${fld("asignatura","Asignatura")}</div><div>${fld("periodo","Período académico","Ejemplo: enero–abril 2027")}</div></div>
+      <h2>Planteamiento</h2>
+      ${fld("resultadoAprendizaje","Resultado de aprendizaje de la asignatura","Copia el resultado del programa de la asignatura al que contribuye esta experiencia.","area")}
+      ${fld("problema","Problema de investigación","Situación concreta que los estudiantes investigarán y por qué importa.","area")}
+      ${fld("pregunta","Pregunta de investigación","Una pregunta delimitada que pueda responderse en el período.")}
+      ${fld("objetivoGeneral","Objetivo general","Inicia con un verbo en infinitivo: analizar, describir, comparar…")}
+      ${fld("objetivosEspecificos","Objetivos específicos","Uno por línea.","area")}
+      <h2>Método</h2>
+      <div class="grid2">
+        <div><label class="f" for="u-enfoque">Enfoque</label><select id="u-enfoque" data-ubind="enfoque"><option value="">Selecciona</option>${["Cuantitativo","Cualitativo","Mixto","Documental"].map(x=>`<option${u.enfoque===x?" selected":""}>${x}</option>`).join("")}</select></div>
+        <div>${fld("tipoEstudio","Tipo de estudio","Descriptivo, exploratorio, correlacional, estudio de caso…")}</div>
+      </div>
+      ${fld("participantes","Participantes o fuentes","Quiénes o qué se estudiará y cómo se seleccionará.","area")}
+      <label class="f">Instrumentos de recolección<small>Consulta el banco de instrumentos para elegir.</small></label>
+      <div class="grid2">${insts}</div>
+      ${fld("otrosInstrumentos","Otros instrumentos")}
+      ${fld("cronograma","Cronograma","Semanas y entregas parciales.","area")}
+      <h2>Evidencias y análisis</h2>
+      ${fld("evidencias","Evidencias esperadas","Datos o productos que generará el trabajo de los estudiantes.","area")}
+      ${fld("analisis","Plan de análisis","Cómo se organizará e interpretará la información.","area")}
+      ${fld("conclusiones","Conclusiones o producto esperado","Informe, póster, ponencia, propuesta…","area")}
+      <h2>Ética</h2>
+      <label class="chk"><input type="checkbox" data-ubind="etica.personas"${et.personas?" checked":""}><span>Los estudiantes recogerán información de personas o instituciones</span></label>
+      <label class="chk"><input type="checkbox" data-ubind="etica.consentimiento"${et.consentimiento?" checked":""}><span>Se usará consentimiento informado o autorización</span></label>
+      <label class="chk"><input type="checkbox" data-ubind="etica.anonimato"${et.anonimato?" checked":""}><span>Los datos se presentarán de forma anónima y agregada</span></label>
+      <label class="chk"><input type="checkbox" data-ubind="etica.fuentes"${et.fuentes?" checked":""}><span>Se exigirá citación de fuentes (APA)</span></label>
+      <h2>Implementación</h2>
+      <div class="grid2"><div><label class="f" for="u-impl">Estado de la implementación</label><select id="u-impl" data-ubind="implementacion">${["No iniciada","En curso","Implementada"].map(x=>`<option${(u.implementacion||"No iniciada")===x?" selected":""}>${x}</option>`).join("")}</select></div></div>
+      <div class="actions">
+        <button class="btn" data-action="enviar"${u.enviada?" disabled":""}>${u.enviada?"Enviada a revisión":"Enviar a revisión"}</button>
+        <a class="btn sec" href="#coherencia">Revisar la coherencia</a>
+        <button class="linkbtn" data-action="borrar" style="margin-left:auto">Eliminar unidad</button>
+      </div>
+      ${u.enviada?`<p class="muted" style="margin-top:8px">Enviada el ${fecha(u.fechaEnvio)}. Puedes seguir editando; la coordinación verá los cambios.</p>`:""}
+    </div>${foot()}</div>`;
+}
+
+function vCoherencia(){
+  const tx = "Revisa que cada elemento de tu unidad se derive del anterior. Valora cada enlace; los enlaces débiles indican dónde ajustar el diseño.";
+  if(!listaUnidades(S.me).length) return noUnidad(4,"Matriz de coherencia",tx);
+  const bar = unitBar("coherencia");
+  return `<div class="wrap">${banners()}${stepHead(4,"Matriz de coherencia",tx)}${bar}<div id="chainBox">${chainHTML()}</div>${foot()}</div>`;
+}
+function chainHTML(){
+  const u = curU(); const c = coherencia(u); const co = u.coherencia || {};
+  const rv = revisionDe(S.unidad) || {}; const rc = rv.coherencia || {}; const ce = cohScore(rc);
+  let html = `<div class="panel"><div class="score"><div class="ring" style="--p:${c.score||0}"><span>${c.score==null?"—":c.score+"%"}</span></div><div><strong>Tu índice de coherencia</strong><br><span class="muted">${c.rated} de ${LINKS.length} enlaces valorados. Sí = 1, Parcial = 0.5, No = 0.</span>${ce.score!=null?`<br><span>Valoración de la coordinación: <strong>${ce.score}%</strong></span>`:""}</div></div>`;
+  html += `<ol class="chain">`;
+  CHAIN.forEach((n,i)=>{
+    const v = nodoValor(u,n);
+    html += `<li class="node ${filled(v)?"full":""}"><div class="nl">${esc(n.n)}</div><div class="nv ${filled(v)?"":"vacio"}">${filled(v)?esc(trunc(v,220)):"Sin completar en la unidad"}</div></li>`;
+    if(i < LINKS.length){
+      const val = co["l"+i] || "";
+      html += `<li class="link ${val}"><div class="lq">${esc(LINKS[i])}</div><div class="seg" role="group" aria-label="${esc(LINKS[i])}">${[["si","Sí"],["parcial","Parcial"],["no","No"]].map(o=>`<button data-action="link" data-i="${i}" data-v="${o[0]}" aria-pressed="${val===o[0]}">${o[1]}</button>`).join("")}</div>${rc["l"+i]?`<span class="tag ${VAL_TAG[rc["l"+i]]}" style="margin-left:10px">Coordinación: ${VAL_TXT[rc["l"+i]]}</span>`:""}</li>`;
+    }
+  });
+  html += `</ol></div>`;
+  const al = alertas(u);
+  html += `<div class="panel"><h2>Revisión automática</h2>${al.length?`<ul class="alerts">${al.map(a=>`<li>${a}</li>`).join("")}</ul>`:`<p>No se detectaron vacíos de forma en la unidad.</p>`}<p class="muted" style="margin-top:10px">Estas alertas revisan la forma, no el contenido. La valoración de fondo la hace la coordinación cuando envías la unidad.</p></div>`;
+  return html;
+}
+function alertas(u){
+  const a = [];
+  CHAIN.forEach(n=>{ if(!filled(nodoValor(u,n))) a.push(`Completa <strong>${esc(n.n.toLowerCase())}</strong> en el paso 3.`); });
+  if(filled(u.pregunta) && !/[?¿]/.test(u.pregunta)) a.push("La pregunta de investigación no está redactada como pregunta.");
+  if(filled(u.objetivoGeneral) && !/^(\s*)[a-záéíóúñ]+(ar|er|ir)\b/i.test(u.objetivoGeneral)) a.push("El objetivo general debería iniciar con un verbo en infinitivo.");
+  const esp = (u.objetivosEspecificos||"").split(/\n+/).map(s=>s.replace(/^[\s\-•\d.)]+/,"")).filter(s=>s.trim());
+  if(esp.length && esp.length < 2) a.push("Considera al menos dos objetivos específicos.");
+  if(esp.length > 5) a.push("Más de cinco objetivos específicos puede ser difícil de lograr en un período.");
+  const en = u.enfoque, ins = u.instrumentos || {};
+  if(en === "Cuantitativo" && !ins.cuestionario && !ins.experimental && !ins.cotejo) a.push("El enfoque es cuantitativo, pero no hay instrumentos que produzcan datos numéricos.");
+  if(en === "Cualitativo" && !ins.entrevista && !ins.grupofocal && !ins.observacion && !ins.diario && !ins.caso) a.push("El enfoque es cualitativo, pero no hay instrumentos de recolección cualitativa.");
+  if(en === "Documental" && !ins.documental && !ins.bibliografica) a.push("El enfoque es documental, pero no hay análisis documental ni revisión bibliográfica.");
+  const et = u.etica || {};
+  if(et.personas && !et.consentimiento) a.push("Se recogerá información de personas: incluye consentimiento o autorización.");
+  return a;
+}
+
+function vRubrica(){
+  const tx = "Selecciona los criterios, asigna pesos que sumen 100 y ajusta los descriptores. Incluye criterios de proceso y de aprendizaje individual.";
+  if(!listaUnidades(S.me).length) return noUnidad(5,"Rúbrica",tx);
+  const bar = unitBar("rubrica");
+  return `<div class="wrap">${banners()}${stepHead(5,"Rúbrica",tx)}${bar}<div id="rubBox">${rubHTML()}</div>${foot()}</div>`;
+}
+function rubHTML(){
+  const u = curU(); const r = rubricaDe(u); const tot = rubricaTotal(r);
+  const grupos = ["Proceso investigativo","Aprendizaje individual"];
+  let html = `<div class="panel"><h2>Criterios y pesos</h2>`;
+  grupos.forEach(g=>{
+    html += `<h3>${g}</h3><div class="crit-list">` + RUBRICA.filter(c=>c.g===g).map(c=>{
+      const cc = r.criterios[c.id] || {on:false,peso:0};
+      return `<div class="crit-row"><input type="checkbox" aria-label="Incluir ${esc(c.n)}" data-action="crit" data-id="${c.id}"${cc.on?" checked":""} style="width:18px;height:18px;accent-color:var(--red)"><span>${esc(c.n)}</span><label style="display:flex;align-items:center;gap:6px"><input type="number" min="0" max="100" step="5" aria-label="Peso de ${esc(c.n)}" data-action="peso" data-id="${c.id}" value="${cc.on?Number(cc.peso)||0:""}"${cc.on?"":" disabled"}>%</label></div>`;
+    }).join("") + `</div>`;
+  });
+  html += `<div class="actions"><span>Total: <span class="total" id="rubTot" style="color:${tot===100?"inherit":"var(--red-ink)"}">${tot}%</span></span><button class="btn sec small" data-action="igualar">Distribuir en partes iguales</button>${r.nuevo?`<button class="btn small" data-action="guardarRub">Usar esta rúbrica</button>`:""}</div>`;
+  if(r.nuevo) html += `<p class="muted">Esta es una propuesta inicial. Ajústala o pulsa “Usar esta rúbrica” para guardarla en tu unidad.</p>`;
+  html += `</div>`;
+  const on = RUBRICA.filter(c=>r.criterios[c.id] && r.criterios[c.id].on);
+  html += `<div class="panel"><div style="display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap"><h2 style="margin:0">Vista de la rúbrica</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sec small" data-action="editDesc">${S.editDesc?"Terminar edición":"Editar descriptores"}</button><button class="btn small" data-action="descRub">Descargar rúbrica</button></div></div>
+    <div class="rub-table-wrap" style="margin-top:14px"><table class="rub"><thead><tr><th>Criterio</th>${ESCALA.map((e,i)=>`<th>${e} (${i+1})</th>`).join("")}</tr></thead><tbody>
+    ${on.map(c=>{ const lv = (r.criterios[c.id].l) || c.l; return `<tr><td class="crit">${esc(c.n)}<br><span class="muted">${Number(r.criterios[c.id].peso)||0}%</span></td>${lv.map((t,i)=>`<td>${S.editDesc?`<textarea aria-label="${esc(c.n)} ${ESCALA[i]}" data-action="desc" data-id="${c.id}" data-i="${i}">${esc(t)}</textarea>`:esc(t)}</td>`).join("")}</tr>`; }).join("") || `<tr><td colspan="5">Selecciona al menos un criterio.</td></tr>`}
+    </tbody></table></div><p class="muted" style="margin-top:10px">Nota del criterio = nivel alcanzado ÷ 4 × peso. La suma de los criterios da la calificación sobre 100.</p></div>`;
+  return html;
+}
+
+function vPortafolio(){
+  const tx = "Reúne el portafolio mínimo de evidencias de tu experiencia. Guarda los archivos en tu OneDrive o Drive institucional y pega aquí el enlace.";
+  if(!listaUnidades(S.me).length) return noUnidad(6,"Portafolio",tx);
+  const bar = unitBar("portafolio");
+  const u = curU(); const p = u.portafolio || {}; const av = portaAvance(u);
+  const items = PORTA.map(it=>{
+    const v = p[it.id] || {};
+    const req = it.req || (it.cond && u.etica && u.etica.personas);
+    const tag = req ? `<span class="tag">Requerido</span>` : it.cond ? `<span class="tag">Si aplica</span>` : `<span class="tag">Opcional</span>`;
+    return `<div class="pf-item ${it.big?"big":""}"><input type="checkbox" id="pf-${it.id}" data-ubind="portafolio.${it.id}.ok"${v.ok?" checked":""}>
+      <div><label for="pf-${it.id}" class="pn">${esc(it.n)}</label> ${tag}<div class="ph">${esc(it.h)}</div></div>
+      <div class="pfields">${it.big?`<textarea aria-label="Reflexión docente" data-ubind="portafolio.${it.id}.nota" placeholder="Escribe tu reflexión">${esc(v.nota||"")}</textarea>`:`<input type="url" aria-label="Enlace de ${esc(it.n)}" data-ubind="portafolio.${it.id}.url" value="${esc(v.url||"")}" placeholder="Enlace al archivo"><textarea aria-label="Nota sobre ${esc(it.n)}" data-ubind="portafolio.${it.id}.nota" placeholder="Nota (opcional)">${esc(v.nota||"")}</textarea>`}</div></div>`;
+  }).join("");
+  return `<div class="wrap">${banners()}${stepHead(6,"Portafolio",tx)}${bar}
+    <div class="panel"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><strong>Portafolio mínimo</strong><span id="pfAv">${av.n} de ${av.t} requeridos</span></div><div class="progress"><span id="pfBar" style="width:${av.pct}%"></span></div></div>
+    ${items}${foot()}</div>`;
+}
+
+function vBanco(){
+  const enf = ["Todos","Cuantitativo","Cualitativo","Mixto","Documental"];
+  const lista = BANCO.filter(b=>S.filtro==="Todos" || b.e.includes(S.filtro));
+  const u = curU();
+  return `<div class="wrap">${banners()}<h1>Banco de instrumentos</h1><p class="lead" style="margin-bottom:22px">Técnicas de recolección y análisis con recomendaciones de uso, herramientas digitales accesibles y cuidados éticos.</p>
+    <div class="filters" role="group" aria-label="Filtrar por enfoque">${enf.map(x=>`<button class="uchip" data-action="filtro" data-v="${x}" aria-pressed="${S.filtro===x}">${x}</button>`).join("")}</div>
+    ${lista.map(b=>`<details class="inst"><summary><span class="nm">${esc(b.n)}</span><span class="meta">${b.e.map(x=>`<span class="tag">${x}</span>`).join("")}<span class="tag warn">${b.f}</span></span></summary><div class="body"><dl>
+      <dt>Para qué sirve</dt><dd>${esc(b.uso)}</dd><dt>Recomendaciones</dt><dd>${esc(b.rec)}</dd><dt>Herramienta digital</dt><dd>${esc(b.dig)}</dd><dt>Cuidado ético</dt><dd>${esc(b.et)}</dd></dl>
+      ${u && b.f==="Recolección" ? (u.instrumentos && u.instrumentos[b.id] ? `<span class="tag ok">Incluido en “${esc(trunc(u.titulo||"Unidad sin título",40))}”</span>` : `<button class="btn sec small" data-action="addInst" data-id="${b.id}">Agregar a “${esc(trunc(u.titulo||"Unidad sin título",40))}”</button>`) : ""}
+    </div></details>`).join("")}
+    ${foot()}</div>`;
+}
+
+/* ================= Panel de coordinación ================= */
+function docentesPanel(){
+  if(S.mode === "db") return Object.entries(S.all).map(([id,d])=>({id, d:normalize(d), rev:S.reviews[id]||{unidades:{}}}));
+  return [{id:"local", d:S.me, rev:S.review}];
+}
+function indicadores(list){
+  const inscritos = list.filter(x=>filled(x.d.perfil.nombre) || DIAG.some(q=>x.d.diagnostico.r[q.id])).length;
+  const preOk = list.filter(x=>evalCompleta(x.d.evaluacion.pre));
+  const ambos = preOk.filter(x=>evalCompleta(x.d.evaluacion.post));
+  const us = list.flatMap(x=>listaUnidades(x.d).map(u=>({u, rev:x.rev})));
+  const enviadas = us.filter(o=>o.u.enviada);
+  const viables = us.filter(o=>{ const r = revisionDe(o.u.id,o.rev); return r && r.estado==="viable"; });
+  const impl = us.filter(o=>o.u.implementacion==="Implementada");
+  const coh = us.map(o=>coherenciaExt(o.u, o.rev)).filter(c=>c.rated===LINKS.length).map(c=>c.score);
+  const cohAuto = us.map(o=>coherencia(o.u)).filter(c=>c.rated===LINKS.length).map(c=>c.score);
+  const portaOk = list.filter(x=>listaUnidades(x.d).some(u=>portaAvance(u).completo));
+  const productos = us.filter(o=>o.u.portafolio && o.u.portafolio.producto && o.u.portafolio.producto.ok).length;
+  const sats = list.map(x=>{ const v = SAT.map(s=>Number(x.d.satisfaccion.r[s[0]])).filter(Boolean); return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; }).filter(v=>v!=null);
+  const deltas = ambos.map(x=>promGeneral(x.d.evaluacion.post) - promGeneral(x.d.evaluacion.pre));
+  const avg = a => a.length ? a.reduce((p,c)=>p+c,0)/a.length : null;
+  const dPre = {}, dPost = {};
+  DIMS.forEach(d=>{ dPre[d.id] = avg(ambos.map(x=>dimProm(x.d.evaluacion.pre)[d.id]).filter(v=>v!=null)); dPost[d.id] = avg(ambos.map(x=>dimProm(x.d.evaluacion.post)[d.id]).filter(v=>v!=null)); });
+  return {inscritos, preOk:preOk.length, ambos:ambos.length, unidades:us.length, enviadas:enviadas.length, viables:viables.length, impl:impl.length, coh:avg(coh), cohN:coh.length, cohAuto:avg(cohAuto), cohAutoN:cohAuto.length, portaOk:portaOk.length, productos, sat:avg(sats), satN:sats.length, delta:avg(deltas), dPre, dPost,
+    rutas: list.map(x=>ruta(x.d.diagnostico)).filter(Boolean).reduce((o,r)=>{ o[r.tipo]=(o[r.tipo]||0)+1; return o; },{})};
+}
+function vPanel(){
+  const list = docentesPanel();
+  const I = indicadores(list);
+  const n1 = v => v==null ? "—" : v.toFixed(1);
+  const rows = [
+    ["Participación y finalización","Docentes que completan la evaluación final ÷ docentes inscritos × 100", `${fmtPct(I.ambos, I.inscritos)}`, `${I.ambos} de ${I.inscritos}`],
+    ["Diseño","Unidades revisadas y consideradas viables", `${I.viables}`, `${fmtPct(I.viables, I.unidades)} de ${I.unidades} unidades`],
+    ["Implementación","Experiencias investigativas puestas en práctica", `${I.impl}`, `${I.unidades} diseñadas`],
+    ["Coherencia metodológica","Índice promedio de la matriz de coherencia valorada por la coordinación (unidades con los 7 enlaces valorados)", I.coh==null?"—":Math.round(I.coh)+"%", `${I.cohN} unidades · autovaloración docente: ${I.cohAuto==null?"—":Math.round(I.cohAuto)+"%"}`],
+    ["Documentación","Docentes con portafolio mínimo completo", fmtPct(I.portaOk, I.inscritos), `${I.portaOk} de ${I.inscritos}`],
+    ["Desarrollo de competencias","Diferencia promedio entre evaluación final e inicial (escala 1–4)", I.delta==null?"—":(I.delta>=0?"+":"")+I.delta.toFixed(2), `${I.ambos} docentes con ambas mediciones`],
+    ["Satisfacción y utilidad","Promedio de satisfacción (escala 1–5)", n1(I.sat), `${I.satN} respuestas`],
+    ["Productos académicos","Productos comunicados o postulados", `${I.productos}`, ""]
+  ];
+  const cmp = I.ambos ? `<div class="cmp">${DIMS.map(d=>{ const a=I.dPre[d.id], b=I.dPost[d.id]; const w=v=>v==null?0:v/4*100; return `<span>${esc(d.n)}</span><div class="track"><span class="pre" style="width:${w(a)}%"></span><span class="post" style="width:${w(b)}%"></span></div><span class="num">${a!=null&&b!=null?((b-a)>=0?"+":"")+(b-a).toFixed(1):"—"}</span>`; }).join("")}</div>` : `<p class="muted">La comparación aparece cuando al menos un docente completa ambas evaluaciones.</p>`;
+  const rutas = Object.entries(I.rutas);
+  const tabla = list.length ? `<div class="tbl-wrap"><table class="doc-table"><thead><tr><th>Docente</th><th>Recinto</th><th>Ruta</th><th>Inicial</th><th>Final</th><th>Unidades</th><th>Portafolio</th><th></th></tr></thead><tbody>
+    ${list.map(x=>{ const us = listaUnidades(x.d); const r = ruta(x.d.diagnostico); const pf = us.length ? Math.max(...us.map(u=>portaAvance(u).pct)) : 0;
+      return `<tr class="${S.panelSel===x.id?"sel":""}"><td><strong>${esc(x.d.perfil.nombre || "Sin nombre")}</strong><br><span class="muted">${esc(x.d.perfil.facultad||"")}</span></td><td>${esc(x.d.perfil.recinto)}</td><td>${r?esc((t=>t.charAt(0).toUpperCase()+t.slice(1))(r.tipo.replace("Ruta de ",""))):"—"}</td><td>${evalCompleta(x.d.evaluacion.pre)?"✓":"—"}</td><td>${evalCompleta(x.d.evaluacion.post)?"✓":"—"}</td><td>${us.length}</td><td>${pf}%</td><td><button class="btn sec small" data-action="verDoc" data-id="${x.id}">${S.panelSel===x.id?"Cerrar":"Revisar"}</button></td></tr>`; }).join("")}
+    </tbody></table></div>` : `<div class="empty"><p>Todavía no hay docentes registrados. Comparte el enlace de la herramienta con el grupo piloto como colaboradores.</p></div>`;
+  let detalle = "";
+  const sel = list.find(x=>x.id===S.panelSel);
+  if(sel){
+    const us = listaUnidades(sel.d);
+    detalle = `<div class="panel"><h2>Unidades de ${esc(sel.d.perfil.nombre||"este docente")}</h2>${us.length?us.map(u=>{ const c = coherencia(u); const r = revisionDe(u.id, sel.rev) || {}; const ce = cohScore(r.coherencia); return `<div class="review">
+      <h4>${esc(u.titulo||"Unidad sin título")}</h4><div class="muted">${esc(u.asignatura||"")} · Diseño ${unidadAvance(u)}% · Coherencia docente ${c.score==null?"—":c.score+"%"} · coordinación ${ce.score==null?"—":ce.score+"%"} · Portafolio ${portaAvance(u).pct}% · ${esc(u.implementacion||"No iniciada")} ${tagRevision(u, sel.rev)}</div>
+      <details style="margin:10px 0"><summary class="linkbtn">Ver planteamiento</summary><div style="font-size:14px;margin-top:8px">${CHAIN.map(n=>`<p><strong>${esc(n.n)}:</strong> ${esc(nodoValor(u,n)||"—")}</p>`).join("")}</div></details>
+      <h4 style="margin:14px 0 4px;font-size:14px">Matriz de coherencia</h4><p class="muted" style="margin:0 0 8px">Tu valoración alimenta el indicador del panel. Las filas resaltadas difieren de la autovaloración del docente. Docente: ${c.score==null?"—":c.score+"%"} · Coordinación: <strong id="rvc-${u.id}">${ce.score==null?"—":ce.score+"%"}</strong></p>
+      <div class="tbl-wrap"><table class="ind"><thead><tr><th>Enlace</th><th>Docente</th><th>Coordinación</th></tr></thead><tbody>${LINKS.map((q,i)=>{ const dv = (u.coherencia||{})["l"+i] || ""; const cv = (r.coherencia||{})["l"+i] || ""; return `<tr${dv&&cv&&dv!==cv?' class="dif"':""}><td>${esc(q)}</td><td>${VAL_TXT[dv]}</td><td><select aria-label="Valoración de la coordinación: ${esc(q)}" data-rv="l${i}" data-u="${u.id}">${["","si","parcial","no"].map(v=>`<option value="${v}"${cv===v?" selected":""}>${v?VAL_TXT[v]:"Sin valorar"}</option>`).join("")}</select></td></tr>`; }).join("")}</tbody></table></div>
+      <div class="grid2"><div><label class="f" for="rv-e-${u.id}">Dictamen</label><select id="rv-e-${u.id}" data-rv="estado" data-doc="${sel.id}" data-u="${u.id}"><option value="">Sin revisar</option>${Object.entries(REV_EST).map(([k,v])=>`<option value="${k}"${r.estado===k?" selected":""}>${v[0]}</option>`).join("")}</select></div></div>
+      <label class="f" for="rv-c-${u.id}">Retroalimentación para el docente</label><textarea id="rv-c-${u.id}" data-rv="comentario" data-doc="${sel.id}" data-u="${u.id}">${esc(r.comentario||"")}</textarea>
+      <div class="actions"><button class="btn small" data-action="guardarRev" data-doc="${sel.id}" data-u="${u.id}">Guardar revisión</button><span class="muted" id="rvs-${u.id}">${esc((S.revMsg||{})[u.id]||"")}</span></div></div>`; }).join(""):`<p class="muted">Sin unidades todavía.</p>`}</div>`;
+  }
+  return `<div class="wrap">${banners()}<h1>Panel de seguimiento</h1><p class="lead" style="margin-bottom:22px">Indicadores del piloto según la hoja de trabajo del proyecto. Los resultados se muestran de forma agregada.</p>
+    <div class="panel"><h2>Indicadores de evaluación</h2><div class="tbl-wrap"><table class="ind"><thead><tr><th>Indicador</th><th>Cálculo</th><th style="text-align:right">Resultado</th><th>Base</th></tr></thead><tbody>
+      ${rows.map(r=>`<tr><td><strong>${r[0]}</strong></td><td class="fx">${r[1]}</td><td class="r">${r[2]}</td><td class="fx">${r[3]}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="muted" style="margin-top:10px">Las metas numéricas se definirán con base en la línea base, la capacidad operativa y la aprobación institucional.</p></div>
+    <div class="panel"><h2>Competencias antes y después</h2><p class="muted">Promedio por dimensión de los docentes con ambas mediciones. Gris: inicial. Rojo: final.</p>${cmp}
+      ${rutas.length?`<h3>Rutas de formación asignadas</h3><p>${rutas.map(([k,v])=>`${esc(k)}: <strong>${v}</strong>`).join(" &nbsp;|&nbsp; ")}</p>`:""}</div>
+    <div class="panel"><h2>Docentes del piloto</h2>${tabla}</div>
+    ${detalle}
+    <div class="panel"><h2>Informe y exportación</h2>
+      <p>Descarga los resultados por docente para Excel. Para el informe, copia el resumen de indicadores y pégalo en Claude: viene con las instrucciones para redactar el borrador.</p>
+      <div class="actions"><button class="btn sec" data-action="csv">Descargar resultados (CSV)</button><button class="btn" data-action="informe">Copiar resumen para el informe</button></div>
+      <div id="informeBox">${S.informe?`<div class="informe" style="margin-top:14px">${esc(S.informe)}</div><div class="actions"><button class="btn sec small" data-action="descInforme">Descargar borrador</button></div>`:""}</div>
+    </div>
+    ${foot()}</div>`;
+}
+
+function foot(){ return `<div class="foot">UNIREMHOS · Vicerrectoría Académica · Programa de Capacitación Docente: Articulación Investigación–Docencia, 2026. Los datos se analizan de forma agregada y confidencial.</div>`; }
+
+const VIEWS = {
+  "inicio":vInicio, "autodiagnostico":vDiag, "evaluacion-inicial":()=>vEval("pre"), "unidad":vUnidad, "coherencia":vCoherencia,
+  "rubrica":vRubrica, "portafolio":vPortafolio, "evaluacion-final":()=>vEval("post"), "instrumentos":vBanco, "panel":vPanel
+};
+
+function render(scrollTop){
+  renderNav();
+  const m = $("#main");
+  m.innerHTML = (VIEWS[S.view]||vInicio)();
+  if(S.readonly) m.querySelectorAll("[data-bind],[data-ubind]").forEach(el=>el.disabled = true);
+  if(scrollTop){ window.scrollTo(0,0); }
+}
+function safeRender(){
+  const a = document.activeElement;
+  if(a && a.closest && a.closest("#main") && /INPUT|TEXTAREA|SELECT/.test(a.tagName)){ renderNav(); return; }
+  const y = window.scrollY; render(false); window.scrollTo(0,y);
+}
+
+/* ================= Eventos ================= */
+function setPath(obj, path, val){ const ks = path.split("."); let o = obj; for(let i=0;i<ks.length-1;i++){ if(typeof o[ks[i]] !== "object" || o[ks[i]] === null) o[ks[i]] = {}; o = o[ks[i]]; } o[ks[ks.length-1]] = val; }
+function valOf(el){ if(el.type === "checkbox") return el.checked; if(el.dataset.num) return Number(el.value); return el.value; }
+
+function onField(e){
+  const el = e.target;
+  if(el.dataset.bind){
+    setPath(S.me, el.dataset.bind, valOf(el));
+    if(el.dataset.bind.startsWith("diagnostico")){ if(diagCompleto(S.me.diagnostico) && !S.me.diagnostico.fecha) S.me.diagnostico.fecha = Date.now(); $("#diagResult").innerHTML = diagResultado(); }
+    if(el.dataset.bind.startsWith("evaluacion.")){ const k = el.dataset.bind.split(".")[1]; if(evalCompleta(S.me.evaluacion[k]) && !S.me.evaluacion[k].fecha) S.me.evaluacion[k].fecha = Date.now(); const box = $("#evalResult"); if(box) box.innerHTML = evalResultado(k); }
+    touch(); renderNav(); return;
+  }
+  if(el.dataset.ubind){
+    const u = curU(); if(!u) return;
+    setPath(u, el.dataset.ubind, valOf(el));
+    const av = $("#uAv"); if(av) av.textContent = unidadAvance(u) + "%";
+    if(el.dataset.ubind.startsWith("portafolio")){ const a = portaAvance(u); $("#pfAv").textContent = `${a.n} de ${a.t} requeridos`; $("#pfBar").style.width = a.pct + "%"; }
+    if(el.dataset.ubind === "titulo"){ const chip = document.querySelector(`.uchip[data-id="${S.unidad}"]`); if(chip) chip.textContent = u.titulo || "Unidad sin título"; }
+    touch(); renderNav(); return;
+  }
+  if(el.dataset.action === "peso" && e.type === "input"){
+    const u = curU(); const r = ensureRub(u); r.criterios[el.dataset.id].peso = Number(el.value)||0;
+    const t = rubricaTotal(r); const tt = $("#rubTot"); tt.textContent = t + "%"; tt.style.color = t===100 ? "inherit" : "var(--red-ink)";
+    touch(); renderNav(); return;
+  }
+  if(el.dataset.action === "desc" && e.type === "input"){
+    const u = curU(); const r = ensureRub(u); const c = r.criterios[el.dataset.id]; const base = RUBRICA.find(x=>x.id===el.dataset.id);
+    if(!c.l) c.l = base.l.slice(); c.l[Number(el.dataset.i)] = el.value; touch(); return;
+  }
+  if(el.dataset.action === "crit" && e.type === "change"){
+    const u = curU(); const r = ensureRub(u); const id = el.dataset.id;
+    if(!r.criterios[id]) r.criterios[id] = {on:false,peso:0};
+    r.criterios[id].on = el.checked; if(!el.checked) r.criterios[id].peso = 0;
+    touch(); $("#rubBox").innerHTML = rubHTML(); renderNav(); return;
+  }
+}
+function ensureRub(u){ if(!u.rubrica || u.rubrica.nuevo){ const r = rubricaDe(u); delete r.nuevo; u.rubrica = clone(r); } return u.rubrica; }
+
+const main = $("#main");
+main.addEventListener("input", onField);
+main.addEventListener("change", e=>{ const el = e.target; if(el.type==="radio" || el.type==="checkbox" || el.tagName==="SELECT") onField(e); });
+
+main.addEventListener("click", async e=>{
+  const b = e.target.closest("[data-action]"); if(!b) return;
+  const a = b.dataset.action;
+  if(a === "crit" || a === "peso" || a === "desc") return;
+  if(S.readonly && ["nueva","enviar","borrar","link","igualar","guardarRub","addInst"].includes(a)) return;
+  if(a === "nueva"){
+    e.preventDefault();
+    const id = uid(); S.me.unidades[id] = {creado:Date.now(), titulo:"", implementacion:"No iniciada"}; S.unidad = id; touch();
+    if(S.view !== "unidad"){ location.hash = "unidad"; } else render(true);
+    setTimeout(()=>{ const t = $("#u-titulo"); if(t) t.focus(); }, 30);
+  }
+  else if(a === "pick"){ S.unidad = b.dataset.id; S.editDesc = false; safeRender(); }
+  else if(a === "enviar"){ const u = curU(); u.enviada = true; u.fechaEnvio = Date.now(); touch(); safeRender(); }
+  else if(a === "borrar"){ const u = curU(); if(confirm(`¿Eliminar “${u.titulo||"Unidad sin título"}”? Esta acción no se puede deshacer.`)){ delete S.me.unidades[S.unidad]; S.unidad = null; touch(); render(true); } }
+  else if(a === "link"){ const u = curU(); if(!u.coherencia) u.coherencia = {}; const k = "l"+b.dataset.i; u.coherencia[k] = u.coherencia[k]===b.dataset.v ? "" : b.dataset.v; touch(); const y = window.scrollY; $("#chainBox").innerHTML = chainHTML(); window.scrollTo(0,y); renderNav(); const nb = document.querySelector(`.seg button[data-i="${b.dataset.i}"][data-v="${b.dataset.v}"]`); if(nb) nb.focus(); }
+  else if(a === "igualar"){ const u = curU(); const r = ensureRub(u); const on = Object.keys(r.criterios).filter(k=>r.criterios[k].on); if(!on.length) return; const p = Math.floor(100/on.length); on.forEach((k,i)=>r.criterios[k].peso = i===0 ? 100 - p*(on.length-1) : p); touch(); $("#rubBox").innerHTML = rubHTML(); renderNav(); }
+  else if(a === "guardarRub"){ ensureRub(curU()); touch(); $("#rubBox").innerHTML = rubHTML(); renderNav(); }
+  else if(a === "editDesc"){ S.editDesc = !S.editDesc; $("#rubBox").innerHTML = rubHTML(); }
+  else if(a === "descRub"){ descargarRubrica(); }
+  else if(a === "filtro"){ S.filtro = b.dataset.v; safeRender(); }
+  else if(a === "addInst"){ const u = curU(); if(!u.instrumentos) u.instrumentos = {}; u.instrumentos[b.dataset.id] = true; touch(); safeRender(); }
+  else if(a === "verDoc"){ S.panelSel = S.panelSel === b.dataset.id ? null : b.dataset.id; safeRender(); }
+  else if(a === "guardarRev"){ guardarRevision(b.dataset.doc, b.dataset.u); }
+  else if(a === "csv"){ descargarCSV(); }
+  else if(a === "informe"){ redactarInforme(b); }
+  else if(a === "descInforme"){ guardarArchivo("Resumen_para_informe_piloto.txt", "\ufeff" + S.informe, "text/plain"); }
+});
+
+/* ================= Revisiones ================= */
+async function guardarRevision(docId, unitId){
+  const est = document.querySelector(`[data-rv="estado"][data-u="${unitId}"]`).value;
+  const com = document.querySelector(`[data-rv="comentario"][data-u="${unitId}"]`).value;
+  const coh = {}; document.querySelectorAll(`select[data-rv^="l"][data-u="${unitId}"]`).forEach(s=>{ if(s.value) coh[s.dataset.rv] = s.value; });
+  const sp = $("#rvc-"+unitId); const showCoh = ()=>{ if(sp){ const sc = cohScore(coh).score; sp.textContent = sc==null ? "—" : sc + "%"; } };
+  const out = $("#rvs-"+unitId);
+  if(S.mode === "db"){
+    const cur = clone(S.reviews[docId] || {unidades:{}}); if(!cur.unidades) cur.unidades = {};
+    cur.unidades[unitId] = {estado:est, comentario:com, coherencia:coh, fecha:Date.now()};
+    out.textContent = "Guardando…";
+    try{ await setDoc(fsDoc(fdb, "revisiones", docId), cur); S.reviews[docId] = cur; showCoh(); out.textContent = "Revisión guardada. El docente la verá en su unidad."; }
+    catch(e){ out.textContent = e && e.code === "permission-denied" ? "No tienes permiso para guardar revisiones." : "No se pudo guardar. Inténtalo de nuevo."; }
+    S.revMsg = Object.assign(S.revMsg||{}, {[unitId]: out.textContent});
+    const o2 = $("#rvs-"+unitId); if(o2) o2.textContent = S.revMsg[unitId]; const c2 = $("#rvc-"+unitId); if(c2){ const sc = cohScore(coh).score; c2.textContent = sc==null ? "—" : sc + "%"; }
+  } else {
+    S.review.unidades[unitId] = {estado:est, comentario:com, coherencia:coh, fecha:Date.now()}; lsSet(LS_REV, S.review); showCoh(); out.textContent = "Revisión guardada en este navegador.";
+  }
+}
+
+/* ================= Descargas ================= */
+async function guardarArchivo(nombre, data, tipo){
+  const url = URL.createObjectURL(new Blob([data],{type:tipo}));
+  const a = document.createElement("a"); a.href = url; a.download = nombre; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1500);
+}
+function descargarRubrica(){
+  const u = curU(); const r = rubricaDe(u);
+  const on = RUBRICA.filter(c=>r.criterios[c.id] && r.criterios[c.id].on);
+  const filas = on.map(c=>{ const lv = r.criterios[c.id].l || c.l; return `<tr><td><b>${esc(c.n)}</b><br>${Number(r.criterios[c.id].peso)||0}%</td>${lv.map(t=>`<td>${esc(t)}</td>`).join("")}</tr>`; }).join("");
+  const html = `<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Rúbrica</title><style>body{font-family:Poppins,Arial,sans-serif;margin:32px;color:#000}h1{font-size:20px;border-left:5px solid #ED1C24;padding-left:10px}p{font-size:13px}table{border-collapse:collapse;width:100%;font-size:12px}td,th{border:1px solid #D3D5D6;padding:8px;vertical-align:top;text-align:left}th{background:#F3F4F4}.top{border-bottom:4px solid #FBAD18;padding-bottom:8px;margin-bottom:16px;font-weight:800}</style></head><body>
+  <div class="top">UNIREMHOS · Rúbrica de experiencia investigativa</div>
+  <h1>${esc(u.titulo||"Unidad investigativa")}</h1><p><b>Asignatura:</b> ${esc(u.asignatura||"")} &nbsp; <b>Período:</b> ${esc(u.periodo||"")} &nbsp; <b>Docente:</b> ${esc(S.me.perfil.nombre||"")}</p>
+  <table><thead><tr><th>Criterio y peso</th>${ESCALA.map((e,i)=>`<th>${e} (${i+1})</th>`).join("")}</tr></thead><tbody>${filas}</tbody></table>
+  <p>Nota del criterio = nivel alcanzado ÷ 4 × peso. La suma de los criterios da la calificación sobre 100.</p></body></html>`;
+  guardarArchivo(`Rubrica_${(u.titulo||"unidad").replace(/[^\wáéíóúñÁÉÍÓÚÑ]+/g,"_").slice(0,40)}.html`, html, "text/html");
+}
+function csvCell(v){ v = v==null ? "" : String(v); return /[",;\n]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v; }
+function descargarCSV(){
+  const list = docentesPanel();
+  const head = ["Docente","Facultad","Recinto","Ruta","Evaluación inicial","Evaluación final","Promedio inicial","Promedio final","Diferencia","Unidades","Enviadas","Viables","Implementadas","Coherencia (docente)","Coherencia (coordinación)","Portafolio mínimo completo","Satisfacción"];
+  const rows = list.map(x=>{
+    const d = x.d; const us = listaUnidades(d); const r = ruta(d.diagnostico);
+    const pi = evalCompleta(d.evaluacion.pre) ? promGeneral(d.evaluacion.pre) : null;
+    const pf = evalCompleta(d.evaluacion.post) ? promGeneral(d.evaluacion.post) : null;
+    const coh = us.map(u=>coherencia(u)).filter(c=>c.rated===LINKS.length).map(c=>c.score);
+    const cohE = us.map(u=>coherenciaExt(u, x.rev)).filter(c=>c.rated===LINKS.length).map(c=>c.score);
+    const sat = SAT.map(s=>Number(d.satisfaccion.r[s[0]])).filter(Boolean);
+    return [d.perfil.nombre, d.perfil.facultad, d.perfil.recinto, r?r.tipo:"", pi!=null?"Sí":"No", pf!=null?"Sí":"No", pi!=null?pi.toFixed(2):"", pf!=null?pf.toFixed(2):"", pi!=null&&pf!=null?(pf-pi).toFixed(2):"",
+      us.length, us.filter(u=>u.enviada).length, us.filter(u=>{ const rv = revisionDe(u.id,x.rev); return rv && rv.estado==="viable"; }).length, us.filter(u=>u.implementacion==="Implementada").length,
+      coh.length ? Math.round(coh.reduce((a,b)=>a+b,0)/coh.length)+"%" : "", cohE.length ? Math.round(cohE.reduce((a,b)=>a+b,0)/cohE.length)+"%" : "", us.some(u=>portaAvance(u).completo)?"Sí":"No", sat.length ? (sat.reduce((a,b)=>a+b,0)/sat.length).toFixed(1) : ""];
+  });
+  const csv = "\ufeff" + [head, ...rows].map(r=>r.map(csvCell).join(",")).join("\r\n");
+  guardarArchivo("Resultados_piloto_Investigacion_Docencia.csv", csv, "text/csv");
+}
+
+async function redactarInforme(btn){
+  const I = indicadores(docentesPanel());
+  const datos = {
+    docentes_inscritos:I.inscritos, evaluacion_inicial_completa:I.preOk, ambas_evaluaciones:I.ambos,
+    unidades_disenadas:I.unidades, unidades_enviadas:I.enviadas, unidades_viables:I.viables, unidades_implementadas:I.impl,
+    coherencia_valorada_por_coordinacion_pct:I.coh==null?null:Math.round(I.coh), coherencia_autovaloracion_docente_pct:I.cohAuto==null?null:Math.round(I.cohAuto), docentes_portafolio_completo:I.portaOk, productos_academicos:I.productos,
+    diferencia_promedio_pre_post:I.delta==null?null:Number(I.delta.toFixed(2)), satisfaccion_promedio_1a5:I.sat==null?null:Number(I.sat.toFixed(2)),
+    promedios_por_dimension:DIMS.map(d=>({dimension:d.n, inicial:I.dPre[d.id]==null?null:Number(I.dPre[d.id].toFixed(2)), final:I.dPost[d.id]==null?null:Number(I.dPost[d.id].toFixed(2))})),
+    rutas_asignadas:I.rutas
+  };
+  const prompt = `Eres asesor académico de la Universidad Eugenio María de Hostos (UNIREMHOS), República Dominicana. Redacta en español un BORRADOR del "Informe de resultados del piloto y recomendaciones de mejora continua" del Programa de Capacitación Docente: Articulación Investigación–Docencia.
+
+Contexto: el diagnóstico inicial (encuesta a 42 docentes, 41 de Santo Domingo y 1 de San Cristóbal) mostró que la investigación ya está presente en la práctica docente (92.9% la incorpora), con oportunidades en la secuencia metodológica (40.5% no la aplica de forma estructurada), la evaluación y la documentación (45.2% con documentación parcial o inexistente). El programa incluyó tres talleres de 2 horas, diseño y revisión de unidades investigativas, matriz de coherencia, rúbricas, portafolio mínimo y evaluación de competencias pre y post con el mismo instrumento (escala 1 a 4).
+
+Datos agregados del piloto (JSON):
+${JSON.stringify(datos, null, 2)}
+
+Instrucciones:
+- Usa solo estos datos; no inventes cifras. Si un dato es null o cero, indica que aún no hay información suficiente.
+- Secciones: 1. Resumen ejecutivo; 2. Participación; 3. Diseño e implementación de experiencias; 4. Cambios en competencias (pre/post); 5. Documentación y productos; 6. Satisfacción; 7. Logros y brechas; 8. Limitaciones (tamaño del grupo, autoevaluación, representatividad); 9. Recomendaciones para futuras cohortes.
+- Tono institucional, sobrio y claro. Texto plano, sin Markdown ni asteriscos; numera las secciones.
+- Extensión: 500 a 800 palabras.`;
+  const box = $("#informeBox");
+  let ok = false;
+  try{ await navigator.clipboard.writeText(prompt); ok = true; }catch(e){}
+  S.informe = prompt;
+  box.innerHTML = `<div class="panel-note" style="margin-top:14px">${ok ? "<strong>Resumen copiado.</strong> Abre Claude, pégalo y pide el borrador. También puedes descargarlo como texto." : "<strong>No se pudo copiar automáticamente.</strong> Descarga el resumen y pega su contenido en Claude."}</div><div class="actions"><button class="btn sec small" data-action="descInforme">Descargar resumen</button></div>`;
+}
+
+/* ================= Arranque ================= */
+S.view = viewFromHash();
+render(false);
+
+/* ================= Sesión ================= */
+let subs = [];
+function stopSubs(){ subs.forEach(u=>{ try{ u(); }catch(e){} }); subs = []; }
+let authMode = "login";
+function setAuthMode(m){
+  authMode = m;
+  document.querySelectorAll("[data-auth]").forEach(b=>b.setAttribute("aria-pressed", String(b.dataset.auth===m)));
+  $("#aPass2Wrap").hidden = m !== "registro";
+  $("#authTitle").textContent = m === "registro" ? "Crea tu cuenta" : "Inicia sesión";
+  $("#authBtn").textContent = m === "registro" ? "Crear cuenta" : "Entrar";
+  $("#aPass").setAttribute("autocomplete", m === "registro" ? "new-password" : "current-password");
+  authMsg("");
+}
+function authMsg(t, ok){ const m = $("#authMsg"); m.textContent = t; m.classList.toggle("ok", !!ok); }
+const AUTH_ERR = {
+  "auth/invalid-credential":"Correo o contraseña incorrectos.",
+  "auth/wrong-password":"Correo o contraseña incorrectos.",
+  "auth/user-not-found":"No existe una cuenta con ese correo. Elige Crear cuenta.",
+  "auth/email-already-in-use":"Ya existe una cuenta con ese correo. Elige Iniciar sesión.",
+  "auth/weak-password":"La contraseña debe tener al menos 6 caracteres.",
+  "auth/invalid-email":"Escribe un correo válido.",
+  "auth/too-many-requests":"Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
+  "auth/network-request-failed":"Sin conexión. Revisa tu internet e inténtalo de nuevo."
+};
+document.querySelectorAll("[data-auth]").forEach(b=>b.addEventListener("click", ()=>setAuthMode(b.dataset.auth)));
+$("#authForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  const email = $("#aEmail").value.trim().toLowerCase(), pass = $("#aPass").value;
+  if(!email || !pass){ authMsg("Escribe tu correo y tu contraseña."); return; }
+  if(authMode === "registro"){
+    if(!email.endsWith(DOMINIO)){ authMsg(`Usa tu correo institucional ${DOMINIO}.`); return; }
+    if(pass !== $("#aPass2").value){ authMsg("Las contraseñas no coinciden."); return; }
+  }
+  const btn = $("#authBtn"); btn.disabled = true;
+  try{
+    if(authMode === "registro"){
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      try{ await sendEmailVerification(cred.user); }catch(err){}
+    } else {
+      await signInWithEmailAndPassword(auth, email, pass);
+    }
+  }catch(err){ authMsg(AUTH_ERR[err && err.code] || "No se pudo completar. Inténtalo de nuevo."); }
+  btn.disabled = false;
+});
+$("#forgotBtn").addEventListener("click", async ()=>{
+  const email = $("#aEmail").value.trim().toLowerCase();
+  if(!email){ authMsg("Escribe tu correo y vuelve a pulsar Olvidé mi contraseña."); return; }
+  try{ await sendPasswordResetEmail(auth, email); authMsg("Si el correo tiene cuenta, recibirás un enlace para cambiar la contraseña. Revisa también la carpeta de correo no deseado.", true); }
+  catch(err){ authMsg(AUTH_ERR[err && err.code] || "No se pudo enviar el enlace."); }
+});
+$("#logoutBtn").addEventListener("click", async ()=>{
+  clearTimeout(S.saveTimer); if(S.saveTimer || S.saving){ await flush(); }
+  await signOut(auth);
+});
+main.addEventListener("click", async e=>{
+  const b = e.target.closest("[data-action]"); if(!b) return;
+  if(b.dataset.action === "reenviarVerif"){
+    try{ await sendEmailVerification(auth.currentUser); b.textContent = "Enlace enviado"; }catch(err){ b.textContent = "Espera un momento e inténtalo de nuevo"; }
+  }
+  if(b.dataset.action === "yaVerifique"){
+    try{ await auth.currentUser.reload(); await auth.currentUser.getIdToken(true); }catch(err){}
+    if(auth.currentUser.emailVerified){ S.canEdit = true; subscribeCoord(); safeRender(); }
+    else { b.textContent = "Aún no aparece verificado"; }
+  }
+});
+
+function subscribeCoord(){
+  subs.push(onSnapshot(collection(fdb, "docentes"), qs=>{ const o = {}; qs.forEach(d=>{ o[d.id] = d.data(); }); S.all = o; if(S.view === "panel") safeRender(); }, ()=>{}));
+  subs.push(onSnapshot(collection(fdb, "revisiones"), qs=>{ const o = {}; qs.forEach(d=>{ o[d.id] = clone(d.data()); }); S.reviews = o; if(S.view === "panel") safeRender(); }, ()=>{}));
+}
+
+setPersistence(auth, browserLocalPersistence).catch(()=>{});
+onAuthStateChanged(auth, user=>{
+  stopSubs();
+  clearTimeout(S.saveTimer); S.saveTimer = null;
+  if(!user){
+    S.uid = null; S.me = normalize(null); S.review = {unidades:{}}; S.all = {}; S.reviews = {};
+    S.canEdit = false; S.esEvaluador = false; S.readonly = false; S.loaded = false;
+    $("#shell").hidden = true; $("#auth").hidden = false;
+    $("#who").hidden = true; $("#logoutBtn").hidden = true; setSave("");
+    $("#aPass").value = ""; $("#aPass2").value = "";
+    return;
+  }
+  const email = (user.email || "").toLowerCase();
+  S.uid = user.uid; S.email = email; S.mode = "db";
+  S.esEvaluador = EVALUADORES.includes(email);
+  S.canEdit = S.esEvaluador;
+  S.readonly = !email.endsWith(DOMINIO);
+  S.me = normalize(null); S.review = {unidades:{}}; S.loaded = false;
+  $("#auth").hidden = true; $("#shell").hidden = false;
+  $("#who").textContent = email; $("#who").hidden = false; $("#logoutBtn").hidden = false;
+  setSave("Cargando…");
+  S.view = viewFromHash();
+  render(true);
+  S.loadTimer = setTimeout(()=>{ if(!S.loaded) setSave("No se pudo conectar todavía; seguiremos intentando."); }, 10000);
+  let first = true;
+  subs.push(onSnapshot(fsDoc(fdb, "docentes", S.uid), snap=>{
+    if(!snap.metadata.fromCache) clearTimeout(S.loadTimer);
+    if(S.saveTimer || S.saving) return;
+    if(snap.exists()){ S.me = normalize(clone(snap.data())); }
+    else if(first && !snap.metadata.fromCache){ S.me = normalize(null); }
+    if(!snap.metadata.fromCache || snap.exists()){ S.loaded = true; if(!S.saveTimer) setSave(""); first = false; }
+    safeRender();
+  }, err=>{ clearTimeout(S.loadTimer); S.loaded = true; setSave(err && err.code === "permission-denied" ? "Sin permiso para leer tus datos" : "No se pudieron cargar tus datos"); safeRender(); }));
+  subs.push(onSnapshot(fsDoc(fdb, "revisiones", S.uid), snap=>{ S.review = snap.exists() ? clone(snap.data()) : {unidades:{}}; if(!S.review.unidades) S.review.unidades = {}; safeRender(); }, ()=>{}));
+  if(S.canEdit) subscribeCoord();
+});
+</script>
+</body>
+</html>
